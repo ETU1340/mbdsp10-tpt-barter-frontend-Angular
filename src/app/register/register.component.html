@@ -1,0 +1,63 @@
+<div class="container">
+    <div class="left-side"></div>
+    <div class="right-side">
+      <div class="form-container">
+        <form (ngSubmit)="onSubmit()">
+          <h2>Inscription</h2>
+          <div>
+            <mat-form-field>
+                <input
+                  matInput
+                  placeholder="Nom"
+                  required
+                  [(ngModel)]="name"
+                  name="name"
+                />
+              </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field>
+                <input
+                  matInput
+                  placeholder="email@gmail.com"
+                  type="mail"
+                  required
+                  [(ngModel)]="mail"
+                  name="mail"
+                />
+              </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field>
+                <input
+                  matInput
+                  placeholder="Nom d'utilisateur"
+                  required
+                  [(ngModel)]="username"
+                  name="username"
+                />
+              </mat-form-field>
+          </div>
+
+          
+          <div>
+            <mat-form-field>
+                <input
+                  matInput
+                  placeholder="Mot de passe"
+                  type="password"
+                  required
+                  [(ngModel)]="password"
+                  name="mdp"
+                />
+              </mat-form-field>
+          </div>
+          <button    mat-stroked-button
+          color="primary" type="submit">S'inscrire</button>
+        </form>
+        <button   mat-stroked-button
+        color="primary" (click)="goToLogin()">Connexion</button>
+      </div>
+    </div>
+  </div>
+  

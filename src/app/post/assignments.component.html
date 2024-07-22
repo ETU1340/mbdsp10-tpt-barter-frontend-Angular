@@ -1,0 +1,95 @@
+<div class="w-full h-full relative">
+  <div
+    *ngIf="isLoading"
+    class="h-full w-full flex justify-center items-center z-50 absolute top-0 left-0"
+  >
+    <div class="loader"></div>
+  </div>
+  <h1 class="m-0">{{ titre }}</h1>
+
+  <mat-paginator
+    #paginator
+    class="mt-5 bg-transparent rounded-lg border border-neutral-100"
+    (page)="handlePageEvent($event)"
+    [length]="totalPages"
+    [pageSize]="limit"
+    [showFirstLastButtons]="true"
+    [pageSizeOptions]="[5, 10, 25]"
+    [pageIndex]="page"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+  <div class="flex justify-start gap-5 mt-5">
+    <div class="flex gap-2 items-center">
+      <div class="h-8 w-8 bg-white rounded-full border"></div>
+      <span class="font-medium text-neutral-700">Unmarked</span>
+    </div>
+    <div class="flex gap-2 items-center">
+      <div class="h-8 w-8 bg-yellow-100 rounded-full border"></div>
+      <span class="font-medium text-neutral-700">Marked</span>
+    </div>
+    <div class="flex gap-2 items-center">
+      <div class="h-8 w-8 bg-green-100 rounded-full border"></div>
+      <span class="font-medium text-neutral-700">Handed</span>
+    </div>
+  </div>
+  <div
+    class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-5 mb-10"
+    *ngIf="!isLoading"
+  >
+    <div
+      *ngFor="let assignment of assignments"
+      (click)="handleAssignmentCardClick(assignment._id!)"
+      [ngClass]="{
+        'bg-yellow-100': assignment.mark && !assignment.isHanded,
+        'bg-green-50': assignment.isHanded,
+        'bg-white': !assignment.isHanded && !assignment.mark,
+        'border border-neutral-100 hover:bg-blue-500 hover:text-white cursor-pointer transition-all duration-100 shadow flex gap-10 p-5 rounded-xl max-w-full': true
+      }"
+    >
+      <div class="flex w-fit">
+        <div class="flex items-center">
+          <img
+            src="{{ assignment.student.profile }}"
+            class="w-16 h-auto rounded-full m-0"
+            alt=""
+          />
+        </div>
+        <div class="flex flex-col gap-4">
+          <img
+            src="{{ assignment.teacher.picture }}"
+            class="w-16 h-auto rounded-full m-0"
+            alt=""
+          />
+          <img
+            src="{{ assignment.subject.picture }}"
+            class="w-16 h-auto rounded-full m-0"
+            alt=""
+          />
+        </div>
+      </div>
+      <div class="flex-grow">
+        <p class="m-0 line-clamp-1">
+          <span class="font-bold">Name </span> :
+          {{ assignment.name }}
+        </p>
+        <p class="m-0 mt-5">
+          <span class="font-bold">Teacher</span> :
+          {{ assignment.teacher.fullName }}
+        </p>
+        <p class="m-0">
+          <span class="font-bold">Student</span> :
+          {{ assignment.student.name }}
+        </p>
+        <p class="m-0">
+          <span class="font-bold">Subject</span> :
+          {{ assignment.subject.name }}
+        </p>
+        <p class="m-0">
+          <span class="font-bold"> Submission date</span> :
+          {{ assignment.dateRendu.toString() | date }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

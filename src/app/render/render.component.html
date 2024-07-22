@@ -1,0 +1,194 @@
+@if (showModal) {
+<div
+  class="w-full h-full bg-black bg-opacity-75 absolute top-0 left-0 z-50 flex items-center justify-center py-10"
+>
+  <div class="w-8/12 bg-white rounded-xl p-10 max-h-full h-full flex flex-col">
+    <button
+      (click)="toggleModal()"
+      class="flex justify-end text-red-500 pb-2 font-bold"
+    >
+      X Fermer
+    </button>
+
+    <h1 class="mt-5">Noter le devoir</h1>
+    <form ngForm #teacherForm (submit)="onSubmit()" class="form flex flex-col">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Note"
+          required
+          [(ngModel)]="noteTeacher"
+          name="note"
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Remarque"
+          required
+          [(ngModel)]="remarkTeacher"
+          name="remark"
+        />
+      </mat-form-field>
+
+      <button
+        mat-stroked-button
+        color="primary"
+        [disabled]="!noteTeacher || remarkTeacher == ''"
+        style="padding: 10px"
+      >
+        Rendre
+      </button>
+    </form>
+  </div>
+</div>
+}
+<!--
+<div style=" text-align:center; ">
+<div class="search-bar">
+<input class="class-input" placeholder="Assignment name" [(ngModel)]="searchNotReturned" (ngModelChange)="onInputChangeFirst($event)"  type="text" />
+&nbsp;
+<button (click)="clearNotReturned()">X</button>
+</div>
+&nbsp;
+<div class="search-bar">
+  <input class="class-input" placeholder="Assignment name" [(ngModel)]="searchReturned" (ngModelChange)="onInputChangeSecond($event)" type="text" />
+  &nbsp;
+  <button (click)="clearReturned()">X</button>
+</div>
+</div>
+
+-->
+
+<!--
+
+<div style=" text-align:center; ">
+<div class="example-container">
+
+  <h2>Assignements</h2>
+  <cdk-virtual-scroll-viewport  itemSize = "10"  class = "example-viewport" #scrollerNotReturned> 
+  <div
+    cdkDropList
+    #todoList="cdkDropList"
+    [cdkDropListData]="assignmentNotReturned"
+    [cdkDropListConnectedTo]="[doneList]"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)"
+  >
+    <div class="example-box" *ngFor="let item of assignmentNotReturned" cdkDrag>
+      {{ item.name }}
+    </div>
+  </div>
+  <div class="border py-1 px-2 flex items-center">
+    <input
+      matInput
+      placeholder="Assignment name"
+      [(ngModel)]="searchReturned"
+      (ngModelChange)="onInputChangeSecond($event)"
+      type="text"
+      class="outline-none bottom-0 border-r-0"
+    />
+    <button (click)="clearReturned()" class="flex items-center w-fit h-fit">
+      <ng-icon name="remixBrush2Fill" size="20"></ng-icon>
+    </button>
+  </div>
+</cdk-virtual-scroll-viewport >
+</div>
+</div>
+
+      -->
+
+<div class="flex w-fit justify-between mx-auto gap-16">
+  <div class="flex-1">
+    <h2>Assignements</h2>
+    <div class="border py-1 px-2 flex items-center bg-white">
+      <input
+        matInput
+        placeholder="Assignment name"
+        [(ngModel)]="searchNotReturned"
+        (ngModelChange)="onInputChangeFirst($event)"
+        type="text"
+        class="outline-none bottom-0 border-r-0 h-14"
+      />
+      <button
+        (click)="clearNotReturned()"
+        class="flex items-center w-fit h-fit"
+      >
+        <ng-icon name="remixBrush2Fill" size="20"></ng-icon>
+      </button>
+    </div>
+    <cdk-virtual-scroll-viewport
+      style="width: full"
+      itemSize="10"
+      class="example-viewport mt-5"
+      #scrollerNotReturned
+    >
+      <div
+        cdkDropList
+        #notReturnedList="cdkDropList"
+        [cdkDropListData]="assignmentNotReturned"
+        [cdkDropListConnectedTo]="[returnedList]"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div
+          class="example-box"
+          *ngFor="let item of assignmentNotReturned"
+          cdkDrag
+        >
+          <p [ngClass]="{ 'text-blue-600': item.mark, 'm-0': true }">
+            <span class="font-bold">
+              {{ item.student.name }}
+            </span>
+            <br />
+            {{ item.name }}
+          </p>
+        </div>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </div>
+  <div class="flex-1">
+    <h2>Assignements rendu</h2>
+    <div class="border py-1 px-2 flex items-center bg-white">
+      <input
+        matInput
+        placeholder="Assignment name"
+        [(ngModel)]="searchReturned"
+        (ngModelChange)="onInputChangeSecond($event)"
+        type="text"
+        class="outline-none bottom-0 border-r-0 h-14"
+      />
+      <button (click)="clearReturned()" class="flex items-center w-fit h-fit">
+        <ng-icon name="remixBrush2Fill" size="20"></ng-icon>
+      </button>
+    </div>
+    <cdk-virtual-scroll-viewport
+      itemSize="10"
+      class="example-viewport mt-5"
+      #scrollerReturned
+    >
+      <div
+        cdkDropList
+        #returnedList="cdkDropList"
+        [cdkDropListData]="assignmentReturned"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div
+          class="example-box"
+          *ngFor="let item of assignmentReturned"
+          cdkDrag
+        >
+          <p [ngClass]="{ 'text-blue-600': item.mark, 'm-0': true }">
+            <span class="font-bold">
+              {{ item.student.name }}
+            </span>
+            <br />
+            {{ item.name }}
+          </p>
+        </div>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </div>
+</div>

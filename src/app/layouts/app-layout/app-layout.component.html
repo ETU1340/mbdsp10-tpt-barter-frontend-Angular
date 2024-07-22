@@ -1,0 +1,57 @@
+<mat-drawer-container class="w-full min-h-screen h-fit">
+  <mat-drawer #drawer class="h-full py-5" opened mode="side">
+    <div
+      class="h-16 w-60 flex items-center justify-center text-xl font-extrabold text-blue-500"
+    >
+      Assign-App
+    </div>
+    <div class="bg-blue-100 mx-5 mt-10 px-6 py-4 rounded-xl">
+      <a
+        class="flex items-center justify-start gap-4 hover:text-blue-500 transition-all duration-100"
+        routerLink="/app/"
+      >
+        <ng-icon name="heroHome" size="27"></ng-icon> Dashboard
+      </a>
+    </div>
+    <div class="bg-blue-100 mx-5 mt-5 px-6 py-4 rounded-xl">
+      <p>Postes</p>
+      <a
+        class="flex items-center justify-start gap-4 mt-4 hover:text-blue-500 transition-all duration-100"
+        routerLink="/app/assignments"
+      >
+        <ng-icon name="bootstrapList" size="27"></ng-icon> All
+      </a>
+      <a
+        class="flex items-center justify-start gap-4 mt-4 hover:text-blue-500 transition-all duration-100"
+        routerLink="/app/add"
+      >
+        <ng-icon name="bootstrapPlusLg" size="27"></ng-icon> Add
+      </a>
+      <a
+        class="flex items-center justify-start gap-4 mt-4 hover:text-blue-500 transition-all duration-100"
+        routerLink="/app/render"
+      >
+        <ng-icon name="bootstrapCheck2All" size="27"></ng-icon> Hand
+      </a>
+    </div>
+  </mat-drawer>
+
+  <div class="bg-white h-screen px-5 py-5 flex flex-col">
+    <div
+      class="w-full h-16 min-h-16 bg-blue-100 rounded-xl flex items-center justify-between px-10"
+    >
+      <button
+        (click)="drawer.toggle()"
+        class="hover:text-blue-500 transition-all duration-150"
+      >
+        <ng-icon name="bootstrapLayoutSidebarInset" size="27"></ng-icon>
+      </button>
+      <button (click)="login()" class="text-red-500 font-bold">Logout</button>
+    </div>
+    <div
+      class="w-11/12 mx-auto flex-grow p-10 rounded-xl bg-blue-50 mt-10 prose max-w-none overflow-y-scroll"
+    >
+      <router-outlet class="h-full w-full"></router-outlet>
+    </div>
+  </div>
+</mat-drawer-container>

@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.success-snackbar {
+  background-color: #4caf50; /* Vert pour succès */
+  color: white;
+}
+
+.error-snackbar {
+  background-color: #f44336; /* Rouge pour erreur */
+  color: white;
+}
