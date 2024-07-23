@@ -5,14 +5,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { AssignmentsService } from '../../shared/services/troc.service';
+import { TrocService } from '../../shared/services/troc.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  IAssignment,
+  IObject,
   ISubject,
 } from '../../shared/interfaces/subject.interface';
 import { StudentsService } from '../../shared/services/students.service';
-import { SubjectsService } from '../../shared/services/subjects.service';
 import { Student } from '../../shared/interfaces/person.interface';
 import { StudentCardComponent } from '../../students/student-card/student-card.component';
 import { CommonModule } from '@angular/common';
@@ -22,8 +21,8 @@ import { MatSelectModule } from '@angular/material/select';
   selector: 'app-edit-assignment',
   standalone: true,
   providers: [provideNativeDateAdapter()],
-  templateUrl: './edit-assignment.component.html',
-  styleUrl: './edit-assignment.component.css',
+  templateUrl: './edit-object.component.html',
+  styleUrl: './edit-object.component.css',
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -37,7 +36,7 @@ import { MatSelectModule } from '@angular/material/select';
   ],
 })
 export class EditAssignmentComponent implements OnInit {
-  assignment: IAssignment | undefined;
+  assignment: IObject | undefined;
   // Pour les champs de formulaire
   name = '';
   dateRendu?: Date = undefined;
@@ -50,15 +49,15 @@ export class EditAssignmentComponent implements OnInit {
   showModal = false;
 
   constructor(
-    private assignmentsService: AssignmentsService,
+    private assignmentsService: TrocService,
     private router: Router,
     private route: ActivatedRoute,
     private studentsService: StudentsService,
-    private subjectsService: SubjectsService
   ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.params['id'];
+    /*
     this.studentsService.getStudents().subscribe((data) => {
       this.students = data;
     });
@@ -71,11 +70,13 @@ export class EditAssignmentComponent implements OnInit {
 
       if (assignment !== undefined) {
         this.name = assignment.name;
-        this.dateRendu = assignment.dateRendu;
+      //  this.dateRendu = assignment.dateRendu;
       }
     });
+    */
   }
   handleStudentChange(index: number) {
+    /*
     this.assignment!.student = {
       name:
         this.students[index].name.first + ' ' + this.students[index].name.last,
@@ -83,8 +84,10 @@ export class EditAssignmentComponent implements OnInit {
       _id: this.students[index]._id,
     };
     this.toggleModal();
+    */
   }
   handleSubjectChange(event: any) {
+    /*
     this.assignment!.subject = {
       name: this.subjects[event.value].title,
       picture: this.subjects[event.value].picture,
@@ -95,6 +98,7 @@ export class EditAssignmentComponent implements OnInit {
       picture: this.subjects[event.value].teacher.picture,
       _id: this.subjects[event.value].teacher._id,
     };
+    */
   }
   toggleModal() {
     this.showModal = !this.showModal;
@@ -105,9 +109,9 @@ export class EditAssignmentComponent implements OnInit {
     console.log(this.remark);
 
     this.assignment.name = this.name;
-    this.assignment.dateRendu = this.dateRendu;
-    this.assignment.mark = this.mark;
-    this.assignment.remark = this.remark;
+   // this.assignment.dateRendu = this.dateRendu;
+   // this.assignment.mark = this.mark;
+    //this.assignment.remark = this.remark;
     this.assignmentsService
       .updateAssignment(this.assignment)
       .subscribe((message) => {

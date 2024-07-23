@@ -37,12 +37,12 @@
       <div class="flex-1">
         <div class="flex-1">
           <img
-            src="{{ assignment.subject.picture }}"
+            src=""
             class="w-44 h-44 rounded-full mx-auto"
             alt=""
           />
           <h4 class="text-center">
-            {{ assignment.subject.name }}
+   
           </h4>
         </div>
       </div>
@@ -55,29 +55,29 @@
             >
               <div class="w-12 h-12">
                 <img
-                  src="{{ assignment.student.profile }}"
+                  src=""
                   class="object-fill w-full h-full m-0"
                   alt=""
                 />
               </div>
-              <p class="m-0">{{ assignment.student.name }}</p>
+              <p class="m-0"></p>
             </div>
             <div class="flex items-center flex-1 gap-4">
               <div class="w-12 h-12">
                 <img
-                  src="{{ assignment.teacher.picture }}"
+                  src=""
                   class="object-fill w-full h-full m-0"
                   alt=""
                 />
               </div>
-              <p class="m-0">{{ assignment.teacher.fullName }}</p>
+              <p class="m-0"></p>
             </div>
           </div>
           <mat-form-field class="w-full mt-5">
             <mat-label>Matiere : </mat-label>
             <mat-select (selectionChange)="handleSubjectChange($event)">
               @for (subject of subjects; track $index) {
-              <mat-option [value]="$index">{{ subject.title }}</mat-option>
+              <mat-option [value]="$index"></mat-option>
               }
             </mat-select>
           </mat-form-field>

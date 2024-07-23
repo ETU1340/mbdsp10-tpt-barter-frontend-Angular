@@ -10,26 +10,16 @@ export interface ISubject {
     picture: string;
   };
 }
-export interface IAssignment {
+export interface IObject {
   _id?: string;
-  dateRendu: Date;
-  isHanded: Boolean;
   name: string;
-  student: {
+  category: string;
+  categoryId: string;
+  owner: {
     _id: string;
     name: string;
-    profile: string;
+    email: string;
+
   };
-  subject: {
-    _id: string;
-    name: string;
-    picture: string;
-  };
-  teacher: {
-    _id: string;
-    fullName: string;
-    picture: string;
-  };
-  mark?: number;
-  remark?: string;
+  photo: [string];
 }

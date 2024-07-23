@@ -9,22 +9,19 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 
 import { TrocService } from '../../shared/services/troc.service';
 import { Router } from '@angular/router';
-import { StudentCardComponent } from '../../students/student-card/student-card.component';
-import { StudentsService } from '../../shared/services/students.service';
-import { MatSelectModule } from '@angular/material/select';
-import { SubjectsService } from '../../shared/services/subjects.service';
+import { StudentCardComponent } from '../../students/student-card/student-card.component';import { MatSelectModule } from '@angular/material/select';
 import { UtilityService} from '../../shared/services/utility.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { Student } from '../../shared/interfaces/person.interface';
 import {
-  IAssignment,
+  IObject,
   ISubject,
 } from '../../shared/interfaces/subject.interface';
 @Component({
   selector: 'app-add-assignment-stepper',
   providers: [provideNativeDateAdapter()],
-  templateUrl: './add-assignment.component.html',
-  styleUrls: ['./add-assignment.component.css'],
+  templateUrl: './add-object.component.html',
+  styleUrls: ['./add-object.component.css'],
   standalone: true,
   imports: [
     FormsModule,
@@ -55,12 +52,11 @@ export class AddObjectComponent implements OnInit {
   constructor(
     private assignmentsService: TrocService,
     private authService: AuthService,
-    private studentsService: StudentsService,
-    private subjectsService: SubjectsService,
     private router: Router,
     private utilityRoute: UtilityService
   ) {}
   ngOnInit(): void {
+    /*
     this.studentsService.getStudents().subscribe((data) => {
       this.students = data;
     });
@@ -68,10 +64,12 @@ export class AddObjectComponent implements OnInit {
       this.subjects = data;
     });
     // this.subjects = this.subjectsService.getSubjects();
+    */
   }
   onSubmit(event: any) {
     if (this.nomAssignment == '' || this.dateDeRendu === undefined) return;
-    let nouvelAssignment: IAssignment = {
+    /*
+    let nouvelAssignment: IObject = {
       dateRendu: this.dateDeRendu,
       name: this.nomAssignment,
       student: {
@@ -102,6 +100,7 @@ export class AddObjectComponent implements OnInit {
         this.router.navigate(['/app/assignments']);
       });
     this.utilityRoute.showSuccessMessage("Assignment ajouté avec succés");
+    */
   }
   toggleModal() {
     this.showModal = !this.showModal;

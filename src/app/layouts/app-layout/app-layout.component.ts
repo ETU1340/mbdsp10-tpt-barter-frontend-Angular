@@ -13,9 +13,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
-import { AssignmentsComponent } from '../../object/assignments.component';
+import { ObjectComponent } from '../../object/object.component';
 import { TeachersComponent } from '../../teachers/teachers.component';
-import { AssignmentsService } from '../../shared/services/troc.service';
+import { TrocService } from '../../shared/services/troc.service';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
@@ -28,7 +28,7 @@ import { AuthService } from '../../shared/services/auth.service';
     MatDividerModule,
     MatIconModule,
     MatSlideToggleModule,
-    AssignmentsComponent,
+    ObjectComponent,
     MatSidenavModule,
     NgIconComponent,
     TeachersComponent,
@@ -50,7 +50,7 @@ export class AppLayoutComponent {
   showFiller = true;
   constructor(
     private authService: AuthService,
-    private assignmentsService: AssignmentsService,
+    private assignmentsService: TrocService,
     private router: Router
   ) {}
   ngOnInit(): void {}

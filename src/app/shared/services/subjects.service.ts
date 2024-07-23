@@ -7,7 +7,7 @@ import { urls } from './urls';
 @Injectable({
   providedIn: 'root',
 })
-export class SubjectsService {
+export class AddObjectComponentSubjectsService {
   constructor(private http: HttpClient) {}
   getSubjects(): Observable<ISubject[]> {
     return this.http.get<ISubject[]>(urls.subjects.get);

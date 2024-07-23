@@ -1,0 +1,53 @@
+<div class="w-full h-full relative">
+  <div
+    *ngIf="isLoading"
+    class="h-full w-full flex justify-center items-center z-50 absolute top-0 left-0"
+  >
+    <div class="loader"></div>
+  </div>
+  <h1 class="m-0">{{ titre }}</h1>
+
+  <mat-paginator
+    #paginator
+    class="mt-5 bg-transparent rounded-lg border border-neutral-100"
+    (page)="handlePageEvent($event)"
+    [length]="totalPages"
+    [pageSize]="limit"
+    [showFirstLastButtons]="true"
+    [pageSizeOptions]="[5, 10, 25]"
+    [pageIndex]="page"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+  <div
+    class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-5 mb-10"
+    *ngIf="!isLoading"
+  >
+    <div
+      *ngFor="let object of objects"
+      (click)="handleAssignmentCardClick(object._id!)"
+      [ngClass]="{
+        'bg-yellow-100 border border-neutral-100 hover:bg-blue-500 hover:text-white cursor-pointer transition-all duration-100 shadow flex gap-5 p-3 rounded-xl max-w-full': true
+      }"
+    >
+      <div class="flex items-center gap-4">
+        <img
+          [src]="object.photo[0] || 'default-photo-url.jpg'"
+          class="w-16 h-16 rounded-full object-cover"
+          alt="Object Photo"
+        />
+        <div class="flex flex-col gap-2">
+          <p class="m-0 text-sm">
+            <span class="font-bold">Name: </span>{{ object.name }}
+          </p>
+          <p class="m-0 text-sm">
+            <span class="font-bold">Owner: </span>{{ object.owner.name }}
+          </p>
+          <p class="m-0 text-sm">
+            <span class="font-bold">Category: </span>{{ object.category }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

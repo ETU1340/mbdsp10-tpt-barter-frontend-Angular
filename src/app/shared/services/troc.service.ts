@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Assignment } from '../../object/assignment.model';
+import { Assignment } from '../../object/object.model';
 import { Observable, forkJoin, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { LoggingService } from './logging.service';
 import { HttpClient } from '@angular/common/http';
-
+import { delay } from 'rxjs/operators';
 // importation des données de test
-import { IAssignment } from '../interfaces/subject.interface';
+import { IObject } from '../interfaces/subject.interface';
 import { urls } from './urls';
 
 @Injectable({
@@ -20,30 +20,69 @@ export class TrocService {
   //uri = 'https://angularmbdsmadagascar2024.onrender.com/api/assignments';
 
   // retourne tous les assignments
-  getAssignments(): Observable<IAssignment[]> {
-    return this.http.get<IAssignment[]>(urls.assignments.get);
+  getAssignments(): Observable<IObject[]> {
+    return this.http.get<IObject[]>(urls.assignments.get);
   }
-  getAssignmentReturned(page: number, limit: number): Observable<any> {
-    return this.http.get<any>(
-      urls.assignments.returned + '?page=' + page + '&limit=' + limit
-    );
-  }
-
-  getAssignmentNotReturned(page: number, limit: number): Observable<any> {
-    return this.http.get<any>(
-      urls.assignments.notReturned + '?page=' + page + '&limit=' + limit
-    );
-  }
-
+/*
   getAssignmentsPagines(page: number, limit: number): Observable<any> {
-    return this.http.get<IAssignment[]>(
-      urls.assignments.get + '?page=' + page + '&limit=' + limit
+    return this.http.get<IObject[]>(
+      urls.objects.get + '?page=' + page + '&limit=' + limit
     );
   }
+*/
 
-  // renvoie un assignment par son id, renvoie undefined si pas trouvé
-  getAssignment(id: number): Observable<IAssignment | undefined> {
-    return this.http.get<Assignment>(urls.assignments.get + '/' + id).pipe(
+
+private generateFakeData(): IObject[] {
+  return [
+    {
+      _id: '1',
+      name: 'Object 1',
+      category: 'Category 1',
+      categoryId: 'cat1',
+      owner: {
+        _id: 'owner1',
+        name: 'Owner 1',
+        email: 'owner1@example.com'
+      },
+      photo: ['photo1.jpg']
+    },
+    {
+      _id: '2',
+      name: 'Object 2',
+      category: 'Category 2',
+      categoryId: 'cat2',
+      owner: {
+        _id: 'owner2',
+        name: 'Owner 2',
+        email: 'owner2@example.com'
+      },
+      photo: ['photo2.jpg']
+    }
+    // Ajoutez autant de fausses données que nécessaire
+  ];
+}
+
+getObjectPagines(page: number, limit: number): Observable<any> {
+  const fakeData = this.generateFakeData();
+  const startIndex = (page - 1) * limit;
+  const paginatedData = fakeData.slice(startIndex, startIndex + limit);
+
+  const response = {
+    objects: paginatedData,
+    totalDocs: fakeData.length,
+    totalPages: Math.ceil(fakeData.length / limit),
+    nextPage: page * limit < fakeData.length ? page + 1 : null,
+    prevPage: page > 1 ? page - 1 : null,
+    hasNextPage: page * limit < fakeData.length,
+    hasPrevPage: page > 1
+  };
+
+  return of(response).pipe(delay(1000)); 
+
+}
+
+  getObject(id: number): Observable<IObject | undefined> {
+    return this.http.get<Object>(urls.objects.get + '/' + id).pipe(
       catchError(
         this.handleError<any>(
           '### catchError: getAssignments by id avec id=' + id
@@ -75,15 +114,15 @@ export class TrocService {
   }
 
   // ajoute un assignment et retourne une confirmation
-  addAssignment(assignment: IAssignment): Observable<any> {
+  addAssignment(assignment: IObject): Observable<any> {
     return this.http.post<Assignment>(urls.assignments.post, assignment);
   }
 
-  updateAssignment(assignment: IAssignment): Observable<any> {
+  updateAssignment(assignment: IObject): Observable<any> {
     return this.http.put<Assignment>(urls.assignments.put, assignment);
   }
 
-  deleteAssignment(assignment: IAssignment): Observable<any> {
+  deleteAssignment(assignment: IObject): Observable<any> {
     return this.http.delete(urls.assignments.delete + '/' + assignment._id);
   }
 
@@ -91,46 +130,15 @@ export class TrocService {
     return this.http.get(urls.stat.get);
   }
 
-  searchReturned(name: string): Observable<IAssignment[]> {
-    return this.http.get<IAssignment[]>(
+  searchReturned(name: string): Observable<IObject[]> {
+    return this.http.get<IObject[]>(
       urls.searchReturned.get + '?name=' + name
     );
   }
 
-  searchNotReturned(name: string): Observable<IAssignment[]> {
-    return this.http.get<IAssignment[]>(
+  searchNotReturned(name: string): Observable<IObject[]> {
+    return this.http.get<IObject[]>(
       urls.searchNotReturned.get + '?name=' + name
     );
   }
-
-  // VERSION NAIVE (on ne peut pas savoir quand l'opération des 1000 insertions est terminée)
-  // peuplerBD() {
-  //   // on utilise les données de test générées avec mockaroo.com pour peupler la base
-  //   // de données
-  //   bdInitialAssignments.forEach((a) => {
-  //     let nouvelAssignment = new Assignment();
-  //     nouvelAssignment.nom = a.nom;
-  //     nouvelAssignment.dateDeRendu = new Date(a.dateDeRendu);
-  //     nouvelAssignment.rendu = a.rendu;
-
-  //     this.addAssignment(nouvelAssignment).subscribe(() => {
-  //       console.log('Assignment ' + a.nom + ' ajouté');
-  //     });
-  //   });
-  // }
-
-  // peuplerBDavecForkJoin(): Observable<any> {
-  //   let appelsVersAddAssignment: Observable<any>[] = [];
-
-  //   bdInitialAssignments.forEach((a) => {
-  //     const nouvelAssignment = new Assignment();
-  //     nouvelAssignment.nom = a.nom;
-  //     nouvelAssignment.dateDeRendu = new Date(a.dateDeRendu);
-  //     nouvelAssignment.rendu = a.rendu;
-
-  //     appelsVersAddAssignment.push(this.addAssignment(nouvelAssignment));
-  //   });
-
-  //   return forkJoin(appelsVersAddAssignment);
-  // }
 }

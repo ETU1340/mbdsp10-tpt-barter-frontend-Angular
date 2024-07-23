@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { AssignmentsComponent } from './object/assignments.component';
+import { ObjectComponent } from './object/object.component';
 import { TeachersComponent } from './teachers/teachers.component';
 import { AuthService } from './shared/services/auth.service';
 import { TrocService } from './shared/services/troc.service';
@@ -27,7 +27,7 @@ import { heroHome } from '@ng-icons/heroicons/outline';
     MatDividerModule,
     MatIconModule,
     MatSlideToggleModule,
-    AssignmentsComponent,
+    ObjectComponent,
     MatSidenavModule,
     NgIconComponent,
     TeachersComponent,

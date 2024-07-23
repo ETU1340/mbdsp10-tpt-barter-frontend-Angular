@@ -13,21 +13,21 @@ import { MatTable, MatTableModule } from '@angular/material/table';
 import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
 
 import { RenduDirective } from '../shared/rendu.directive';
-import { Assignment } from './assignment.model';
-import { AssignmentDetailComponent } from './detail-object/assignment-detail.component';
-import { AddAssignmentComponent } from './add-object/add-assignment.component';
-import { AssignmentsService } from '../shared/services/troc.service';
+import { Assignment } from './object.model';
+//import { AssignmentDetailComponent } from './detail-object/assignment-detail.component';
+//import { AddObjectComponent } from './add-object/add-object.component';
+import { TrocService } from '../shared/services/troc.service';
 import { Router, RouterLink } from '@angular/router';
 import { filter, map, pairwise, tap, throttleTime } from 'rxjs/operators';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import {} from 'ngx-spinner';
-import { IAssignment } from '../shared/interfaces/subject.interface';
+import { IObject } from '../shared/interfaces/subject.interface';
 @Component({
-  selector: 'app-assignments',
+  selector: 'app-object',
   standalone: true,
   providers: [],
-  templateUrl: './assignments.component.html',
-  styleUrl: './assignments.component.css',
+  templateUrl: './object.component.html',
+  styleUrl: './object.component.css',
   imports: [
     CommonModule,
     FormsModule,
@@ -40,13 +40,13 @@ import { IAssignment } from '../shared/interfaces/subject.interface';
     MatListModule,
     MatSliderModule,
     RenduDirective,
-    AssignmentDetailComponent,
-    AddAssignmentComponent,
+    //AssignmentDetailComponent,
+    //AddObjectComponent,
     NgxSpinnerModule,
   ],
 })
-export class AssignmentsComponent implements OnInit {
-  titre = 'Liste des assignments';
+export class ObjectComponent implements OnInit {
+  titre = 'Liste des objets';
   // Pour la pagination
   page = 1;
   limit = 10;
@@ -59,7 +59,7 @@ export class AssignmentsComponent implements OnInit {
   // tableau des assignments POUR AFFICHAGE
   displayedColumns: string[] = ['nom', 'dateDeRendu'];
 
-  assignments: IAssignment[] = [];
+  objects: IObject[] = [];
 
   // UI control
   isLoading = true;
@@ -69,7 +69,7 @@ export class AssignmentsComponent implements OnInit {
 
   // ici on injecte le service
   constructor(
-    private assignmentsService: AssignmentsService,
+    private assignmentsService: TrocService,
     private ngZone: NgZone, // private spinner: NgxSpinnerService
     private router: Router
   ) {}
@@ -105,10 +105,10 @@ export class AssignmentsComponent implements OnInit {
   getAssignmentsFromService() {
     this.isLoading = true;
     this.assignmentsService
-      .getAssignmentsPagines(this.page, this.limit)
+      .getObjectPagines(this.page, this.limit)
       .subscribe((data) => {
         console.log(data);
-        this.assignments = data.assignments;
+        this.objects = data.objects;
         this.totalDocs = data.totalDocs;
         this.totalPages = data.totalPages;
         this.nextPage = data.nextPage;
@@ -122,11 +122,11 @@ export class AssignmentsComponent implements OnInit {
   getAssignmentsFromServicePourScrollInfini() {
     // on récupère les assignments depuis le service
     this.assignmentsService
-      .getAssignmentsPagines(this.page, this.limit)
+      .getObjectPagines(this.page, this.limit)
       .subscribe((data) => {
         // les données arrivent ici au bout d'un certain temps
         console.log('Données arrivées');
-        this.assignments = [...this.assignments, ...data.docs];
+        this.objects = [...this.objects, ...data.docs];
         this.totalDocs = data.totalDocs;
         this.totalPages = data.totalPages;
         this.nextPage = data.nextPage;

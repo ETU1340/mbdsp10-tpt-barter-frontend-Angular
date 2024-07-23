@@ -28,4 +28,10 @@ export const urls = {
     login: baseurl + 'auth/login',
     register:  baseurl + 'auth/register'
   },
+  objects: {
+    post: baseurl + 'objects',
+    get: baseurl + 'objects',
+    put: baseurl + 'objects',
+    delete: baseurl + 'objects',
+  },
 };

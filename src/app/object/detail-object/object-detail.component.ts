@@ -5,15 +5,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { AssignmentsService } from '../../shared/services/troc.service';
+import { TrocService } from '../../shared/services/troc.service';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { UtilityService } from '../../shared/services/utility.service';
-import { IAssignment } from '../../shared/interfaces/subject.interface';
+import { IObject } from '../../shared/interfaces/subject.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthPopupComponent } from '../../popups/auth-popup/auth-popup.component';
 @Component({
-  selector: 'app-assignment-detail',
+  selector: 'app-object-detail',
   standalone: true,
   imports: [
     CommonModule,
@@ -22,14 +22,14 @@ import { AuthPopupComponent } from '../../popups/auth-popup/auth-popup.component
     MatCardModule,
     MatCheckboxModule,
   ],
-  templateUrl: './assignment-detail.component.html',
-  styleUrl: './assignment-detail.component.css',
+  templateUrl: './object-detail.component.html',
+  styleUrl: './object-detail.component.css',
 })
 export class AssignmentDetailComponent implements OnInit {
-  assignment!: IAssignment | undefined;
+  object!: IObject | undefined;
   isAuthorizedToDelete = false;
   constructor(
-    private assignmentsService: AssignmentsService,
+    private trocService: TrocService,
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
@@ -45,8 +45,8 @@ export class AssignmentDetailComponent implements OnInit {
     // On recupere l'id de l'assignment dans l'URL à l'aide de ActivatedRoute
     const id = this.route.snapshot.params['id'];
     // On utilise le service pour récupérer l'assignment avec cet id
-    this.assignmentsService.getAssignment(id).subscribe((assignment) => {
-      this.assignment = assignment;
+    this.trocService.getObject(id).subscribe((object) => {
+      this.object = object;
     });
     this.isAuthorizedToDelete = this.authService.isAdmin();
   }
@@ -56,18 +56,18 @@ export class AssignmentDetailComponent implements OnInit {
       this.dialog.open(AuthPopupComponent);
       return;
     }
-    if (this.assignment) {
-      this.assignmentsService
-        .deleteAssignment(this.assignment)
+    if (this.object) {
+      this.trocService
+        .deleteAssignment(this.object)
         .subscribe((message) => {
-          this.assignment = undefined;
+          this.object = undefined;
           this.router.navigate(['/app/assignments']);
         });
     }
   }
 
   handleUpdate() {
-    this.router.navigate(['/app/assignment/edit/' + this.assignment?._id]);
+    this.router.navigate(['/app/assignment/edit/' + this.object?._id]);
   }
 
   isAdmin() {
