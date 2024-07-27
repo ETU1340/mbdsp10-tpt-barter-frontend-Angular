@@ -6,18 +6,17 @@
     <div class="loader"></div>
   </div>
   <h1 class="m-0">{{ titre }}</h1>
-
   <mat-paginator
-    #paginator
-    class="mt-5 bg-transparent rounded-lg border border-neutral-100"
-    (page)="handlePageEvent($event)"
-    [length]="totalPages"
-    [pageSize]="limit"
-    [showFirstLastButtons]="true"
-    [pageSizeOptions]="[5, 10, 25]"
-    [pageIndex]="page"
-    aria-label="Select page"
-  >
+  #paginator
+  class="mt-5 bg-transparent rounded-lg border border-neutral-100"
+  (page)="handlePageEvent($event)"
+  [length]="totalDocs"
+  [pageSize]="limit"
+  [showFirstLastButtons]="true"
+  [pageSizeOptions]="[5, 10, 25]"
+  [pageIndex]="page"
+  aria-label="Select page"
+>
   </mat-paginator>
   <div
     class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-5 mb-10"
@@ -25,7 +24,7 @@
   >
     <div
       *ngFor="let object of objects"
-      (click)="handleAssignmentCardClick(object._id!)"
+      (click)="handleObjectCardClick(object.id!)"
       [ngClass]="{
         'bg-yellow-100 border border-neutral-100 hover:bg-blue-500 hover:text-white cursor-pointer transition-all duration-100 shadow flex gap-5 p-3 rounded-xl max-w-full': true
       }"
@@ -44,7 +43,7 @@
             <span class="font-bold">Owner: </span>{{ object.owner.name }}
           </p>
           <p class="m-0 text-sm">
-            <span class="font-bold">Category: </span>{{ object.category }}
+            <span class="font-bold">Category: </span>{{ object.category.title }}
           </p>
         </div>
       </div>

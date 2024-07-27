@@ -28,6 +28,9 @@ export const urls = {
     login: baseurl + 'auth/login',
     register:  baseurl + 'auth/register'
   },
+  categoties: {
+    get: baseurl + 'categories',
+  },
   objects: {
     post: baseurl + 'objects',
     get: baseurl + 'objects',

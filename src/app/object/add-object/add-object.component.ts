@@ -1,28 +1,22 @@
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
-
 import { TrocService } from '../../shared/services/troc.service';
-import { Router } from '@angular/router';
-import { StudentCardComponent } from '../../students/student-card/student-card.component';import { MatSelectModule } from '@angular/material/select';
-import { UtilityService} from '../../shared/services/utility.service';
-import { AuthService } from '../../shared/services/auth.service';
-import { Student } from '../../shared/interfaces/person.interface';
-import {
-  IObject,
-  ISubject,
-} from '../../shared/interfaces/subject.interface';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IObject } from '../../shared/interfaces/other.interface';
+import { CommonModule } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
+
 @Component({
-  selector: 'app-add-assignment-stepper',
+  selector: 'app-add-object',
+  standalone: true,
   providers: [provideNativeDateAdapter()],
   templateUrl: './add-object.component.html',
   styleUrls: ['./add-object.component.css'],
-  standalone: true,
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -31,102 +25,54 @@ import {
     MatFormFieldModule,
     MatDatepickerModule,
     MatButtonModule,
-    StudentCardComponent,
     MatSelectModule,
   ],
 })
 export class AddObjectComponent implements OnInit {
-  currentStep: number = 1;
-  // champs du formulaire
-  nomAssignment = '';
-  dateDeRendu = undefined;
-  assignedStudent: Student | null = null;
-  selectedSubject: ISubject | null = null;
-  subject: string = '';
-  // modal controller
-  showModal = false;
-
-  //
-  students: Student[] = [];
-  subjects: ISubject[] = [];
+  name = '';
+  description = '';
+  photos: File[] = [];
+  ownerId: number | undefined;
+  categoryId: number | undefined;
+  categories: { id: number, title: string }[] = [];
+  
   constructor(
-    private assignmentsService: TrocService,
-    private authService: AuthService,
-    private router: Router,
-    private utilityRoute: UtilityService
+    private objectService: TrocService,
+    private router: Router
   ) {}
-  ngOnInit(): void {
-    /*
-    this.studentsService.getStudents().subscribe((data) => {
-      this.students = data;
-    });
-    this.subjectsService.getSubjects().subscribe((data) => {
-      this.subjects = data;
-    });
-    // this.subjects = this.subjectsService.getSubjects();
-    */
+
+  ngOnInit() {
+    this.loadCategories();
   }
-  onSubmit(event: any) {
-    if (this.nomAssignment == '' || this.dateDeRendu === undefined) return;
-    /*
-    let nouvelAssignment: IObject = {
-      dateRendu: this.dateDeRendu,
-      name: this.nomAssignment,
-      student: {
-        _id: this.assignedStudent!._id,
-        name:
-          this.assignedStudent!.name.first +
-          ' ' +
-          this.assignedStudent!.name.last,
-        profile: this.assignedStudent!.picture.thumbnail,
-      },
-      subject: {
-        _id: this.selectedSubject!._id,
-        name: this.selectedSubject!.title,
-        picture: this.selectedSubject!.picture,
-      },
-      teacher: {
-        _id: this.selectedSubject!.teacher._id,
-        fullName: this.selectedSubject!.teacher.fullName,
-        picture: this.selectedSubject!.teacher.picture,
-      },
-      isHanded: false,
+
+  handleCategoryChange(event: any) {
+    this.categoryId = event.value;
+  }
+  handleFileInput(event: any) {
+    const files = event.target.files;
+    if (files) {
+      this.photos = Array.from(files); // Convertir en tableau de fichiers
+    }
+  }
+
+  loadCategories() {
+    this.objectService.getCategories().subscribe((categories) => {
+      this.categories = categories;
+    });
+  }
+
+  handleAddObject() {
+    if (!this.name || !this.description || this.categoryId === undefined) return;
+
+    const objectData = {
+      name: this.name,
+      description: this.description,
+      categoryId: this.categoryId,
+      photos: this.photos // Pour la prévisualisation seulement
     };
-
-    this.assignmentsService
-      .addAssignment(nouvelAssignment)
-      .subscribe((response) => {
-        console.log(response);
-        this.router.navigate(['/app/assignments']);
-      });
-    this.utilityRoute.showSuccessMessage("Assignment ajouté avec succés");
-    */
-  }
-  toggleModal() {
-    this.showModal = !this.showModal;
-  }
-  setSelectedStudent(index: number) {
-    this.assignedStudent = this.students[index];
-    console.log(this.assignedStudent);
-
-    this.toggleModal();
-  }
-  setSubject(event: any) {
-    this.selectedSubject = this.subjects[event.value];
-  }
-
-  isAdmin() {
-    return this.authService.isAdmin();
-  }
-  nextStep() {
-    if (this.currentStep < 3) {
-      this.currentStep++;
-    }
-  }
-
-  previousStep() {
-    if (this.currentStep > 1) {
-      this.currentStep--;
-    }
+    this.ownerId =   Number(localStorage.getItem('userId'));
+    this.objectService.addObject( this.name,this.description,this.categoryId,this.ownerId,this.photos).subscribe((response:any) => {
+      this.router.navigate(['/app/objects']);
+    });
   }
 }

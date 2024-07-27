@@ -2,10 +2,11 @@ import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule,HTTP_INTERCEPTORS  } from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';  
 import {MatInputModule} from '@angular/material/input';
+import { AuthInterceptor } from './interceptor/auth.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
@@ -14,6 +15,11 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(FormsModule),
     importProvidersFrom(ReactiveFormsModule),
     importProvidersFrom(CommonModule),
-    importProvidersFrom(MatInputModule)
+    importProvidersFrom(MatInputModule),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ]
 };

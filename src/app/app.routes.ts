@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 import { ObjectComponent } from './object/object.component';
 import { AddObjectComponent } from './object/add-object/add-object.component';
-import { AssignmentDetailComponent } from './object/detail-object/object-detail.component';
+import { ObjectDetailComponent } from './object/detail-object/object-detail.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { EditAssignmentComponent } from './object/edit-object/edit-object.component';
+import { EditObjectComponent } from './object/edit-object/edit-object.component';
 import { authGuard } from './shared/auth.guard';
 import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -21,23 +21,23 @@ export const routes: Routes = [
       { path: '', component: DashboardComponent, canActivate: [authGuard] },
       {
         path: 'add',
-        component: ObjectComponent,
+        component: AddObjectComponent,
         canActivate: [authGuard],
       },
-      { path: 'assignments', component: ObjectComponent },
+      { path: 'objects', component: ObjectComponent },
       {
-        path: 'assignment/:id',
-        component: AssignmentDetailComponent,
+        path: 'object/:id',
+        component: ObjectDetailComponent,
         canActivate: [authGuard],
       },
       {
-        path: 'assignment/edit/:id',
-        component: EditAssignmentComponent,
-        canActivate: [authGuard, isAdmin],
+        path: 'object/edit/:id',
+        component: EditObjectComponent,
+        canActivate: [authGuard],
       },
       {
-        path: 'assignment/details/:id',
-        component: AssignmentDetailComponent,
+        path: 'object/details/:id',
+        component: ObjectDetailComponent,
         canActivate: [authGuard],
       },
     ],

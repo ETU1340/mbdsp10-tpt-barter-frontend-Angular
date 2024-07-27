@@ -21,7 +21,7 @@ import { Router, RouterLink } from '@angular/router';
 import { filter, map, pairwise, tap, throttleTime } from 'rxjs/operators';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import {} from 'ngx-spinner';
-import { IObject } from '../shared/interfaces/subject.interface';
+import { IObject } from '../shared/interfaces/other.interface';
 @Component({
   selector: 'app-object',
   standalone: true,
@@ -48,7 +48,7 @@ import { IObject } from '../shared/interfaces/subject.interface';
 export class ObjectComponent implements OnInit {
   titre = 'Liste des objets';
   // Pour la pagination
-  page = 1;
+  page = 0;
   limit = 10;
   totalDocs!: number;
   totalPages!: number;
@@ -102,11 +102,11 @@ export class ObjectComponent implements OnInit {
       });
   }
 
-  getAssignmentsFromService() {
+  getAssignmentsFromService(): void {
     this.isLoading = true;
-    this.assignmentsService
-      .getObjectPagines(this.page, this.limit)
-      .subscribe((data) => {
+    this.assignmentsService.getObjectPagines(this.page, this.limit).subscribe(
+      
+      (data) => {
         console.log(data);
         this.objects = data.objects;
         this.totalDocs = data.totalDocs;
@@ -116,7 +116,12 @@ export class ObjectComponent implements OnInit {
         this.hasNextPage = data.hasNextPage;
         this.hasPrevPage = data.hasPrevPage;
         this.isLoading = false;
-      });
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+        this.isLoading = false;
+      }
+    );
   }
 
   getAssignmentsFromServicePourScrollInfini() {
@@ -160,7 +165,7 @@ export class ObjectComponent implements OnInit {
     this.getAssignmentsFromService();
   }
 
-  handleAssignmentCardClick(assignmentId: string) {
-    this.router.navigate(['/app/assignment/details/' + assignmentId]);
+  handleObjectCardClick(objectId: string) {
+    this.router.navigate(['/app/object/details/' + objectId]);
   }
 }

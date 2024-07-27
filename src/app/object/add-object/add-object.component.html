@@ -1,178 +1,63 @@
-@if (showModal) {
-<div
-  class="w-full h-full bg-black bg-opacity-75 absolute top-0 left-0 flex items-center justify-center py-10"
-  style="z-index: 9990 !important"
->
-  <div class="w-8/12 bg-white rounded-xl p-10 max-h-full h-full flex flex-col">
-    <button
-      (click)="toggleModal()"
-      class="flex justify-end text-red-500 pb-2 font-bold"
-    >
-      X Fermer
-    </button>
-    <h1 class="mt-5">Liste des etudiants</h1>
-    <div class="flex-1 grid grid-cols-2 gap-5 overflow-y-scroll">
-      @for (item of students; track $index) {
-      <app-student-card
-        class="w-full"
-        [name]="item.name.last"
-        [photo]="item.picture.medium"
-        [sid]="'' + ($index + 1)"
-        (click)="setSelectedStudent($index)"
-      />
-      }
-    </div>
-  </div>
-</div>
-}
-<form
-  ngForm
-  #assignmentForm
-  (submit)="onSubmit($event); assignmentForm.reset()"
-  class="form"
->
-  <!-- Étape 1 -->
-  <div *ngIf="currentStep === 1" class="flex flex-col w-6/12 mx-auto">
-    <h2>Étape 1: Informations de base</h2>
-    <mat-form-field class="mt-5">
+<div class="w-11/12 mx-auto bg-white px-12 py-10">
+  <h1 class="text-center">Ajout d'un nouvel objet</h1>
+  <form
+    (ngSubmit)="handleAddObject()"
+    #formAddObject="ngForm"
+  >
+    <mat-form-field class="w-full mt-5">
+      <mat-label>Nom</mat-label>
       <input
         matInput
-        placeholder="Assignment name"
+        placeholder="Nom de l'objet"
+        [(ngModel)]="name"
+        name="name"
         required
-        [(ngModel)]="nomAssignment"
-        name="nom"
       />
     </mat-form-field>
-    <mat-form-field>
-      <mat-label>Date de rendu</mat-label>
-      <input
+
+    <mat-form-field class="w-full mt-5">
+      <mat-label>Description</mat-label>
+      <textarea
         matInput
-        [matDatepicker]="picker"
-        [(ngModel)]="dateDeRendu"
-        name="date"
-      />
-      <mat-hint class="mt-2">dd/MM/YYYY</mat-hint>
-      <mat-datepicker-toggle
-        matIconSuffix
-        [for]="picker"
-      ></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
+        placeholder="Description de l'objet"
+        [(ngModel)]="description"
+        name="description"
+        required
+      ></textarea>
     </mat-form-field>
-    <button
-      type="button"
-      class="mt-10 bg-blue-500 text-white py-2 font-bold rounded-lg"
-      (click)="nextStep()"
-    >
-      Suivant
-    </button>
-  </div>
 
-  <!-- Étape 2 -->
-  <div *ngIf="currentStep === 2" class="flex flex-col w-6/12 mx-auto">
-    <h2>Étape 2: Informations sur l'étudiant</h2>
-    @if (assignedStudent) {
-    <div class="mx-auto" (click)="toggleModal()">
-      <img
-        src="{{ assignedStudent.picture.medium }}"
-        class="w-52 h-52 rounded-full mx-auto"
-        alt=""
-      />
-      <h4 class="text-center">
-        Assigned student : {{ assignedStudent.name.first }}
-      </h4>
-    </div>
-    } @else {
-    <div
-      (click)="toggleModal()"
-      class="h-40 border border-dashed rounded-md flex justify-center items-center border-slate-900 bg-white font-bold"
-    >
-      Select student
-    </div>
-    }
-    <div class="flex gap-4 w-full mt-10">
-      <button
-        type="button"
-        class="flex-1 border-blue-500 border-2 py-2 text-blue-500 rounded-lg"
-        (click)="previousStep()"
-      >
-        Précédent
-      </button>
-      <button
-        type="button"
-        class="flex-1 bg-blue-500 text-white py-2 font-bold rounded-lg"
-        (click)="nextStep()"
-      >
-        Suivant
-      </button>
-    </div>
-  </div>
-
-  <!-- Étape 3 -->
-  <div *ngIf="currentStep === 3" class="flex flex-col w-6/12 mx-auto">
-    <h2>Étape 3: Informations sur le sujet</h2>
-
-    <mat-form-field class="w-full">
-      <mat-label>Matiere : </mat-label>
-      <mat-select (selectionChange)="setSubject($event)">
-        @for (subject of subjects; track $index) {
-        <mat-option [value]="$index">{{ subject.title }}</mat-option>
-        }
+    <mat-form-field class="w-full mt-5">
+      <mat-label>Catégorie</mat-label>
+      <mat-select (selectionChange)="handleCategoryChange($event)" name="category" required>
+        <mat-option *ngFor="let category of categories" [value]="category.id">
+          {{ category.title }}
+        </mat-option>
       </mat-select>
     </mat-form-field>
-    @if (selectedSubject) {
-    <div class="flex w-full">
-      <div class="flex items-center flex-1 gap-4">
-        <div class="w-12 h-12">
-          <img
-            src="{{ selectedSubject.picture }}"
-            class="object-fill w-full h-full m-0"
-            alt=""
-          />
-        </div>
-        <p>{{ selectedSubject.title }}</p>
-      </div>
-      <div class="flex items-center flex-1 gap-4">
-        <div class="w-12 h-12">
-          <img
-            src="{{ selectedSubject.teacher.picture }}"
-            class="object-fill w-full h-full m-0"
-            alt=""
-          />
-        </div>
-        <p>{{ selectedSubject.teacher.fullName }}</p>
-      </div>
-    </div>
-    }
 
-    <div class="flex gap-4 w-full mt-10">
+    <mat-form-field class="w-full mt-5">
+      <input
+        type="file"
+        (change)="handleFileInput($event)"
+        multiple
+      />
+    </mat-form-field>
+
+    <div class="flex gap-4 mt-5">
       <button
-        type="button"
-        class="flex-1 border-blue-500 border-2 py-2 text-blue-500 rounded-lg"
-        (click)="previousStep()"
+        class="flex-1 py-2 bg-blue-500 rounded-lg text-white"
+        type="submit"
       >
-        Précédent
-      </button>
-      <button
-        [ngClass]="{
-          'flex-1': true,
-          'bg-blue-500': true,
-          'text-white': true,
-          'py-2': true,
-          'font-bold': true,
-          'rounded-lg': true,
-          'bg-neutral-200':
-            nomAssignment === '' || dateDeRendu === undefined ,
-          'text-neutral-400':
-            nomAssignment === '' || dateDeRendu === undefined ,
-          'cursor-not-allowed':
-            nomAssignment === '' || dateDeRendu === undefined 
-        }"
-        [disabled]="
-          nomAssignment == '' || dateDeRendu === undefined
-        "
-      >
-        Ajouter un devoir
+        Ajouter
       </button>
     </div>
+  </form>
+</div>
+
+<!-- Prévisualisation des images -->
+<div *ngIf="photos.length > 0" class="mt-5">
+  <h2>Prévisualisation des photos :</h2>
+  <div class="flex flex-wrap gap-2">
+    <img *ngFor="let photo of photos" [src]="photo" class="w-24 h-24 object-cover" alt="Photo prévisualisée" />
   </div>
-</form>
+</div>

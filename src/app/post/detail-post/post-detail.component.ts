@@ -9,7 +9,7 @@ import { AssignmentsService } from '../../shared/services/troc.service';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { UtilityService } from '../../shared/services/utility.service';
-import { IAssignment } from '../../shared/interfaces/subject.interface';
+import { IAssignment } from '../../shared/interfaces/other.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthPopupComponent } from '../../popups/auth-popup/auth-popup.component';
 @Component({
@@ -67,7 +67,7 @@ export class AssignmentDetailComponent implements OnInit {
   }
 
   handleUpdate() {
-    this.router.navigate(['/app/assignment/edit/' + this.assignment?._id]);
+    this.router.navigate(['/app/assignment/edit/' + this.assignment?.id]);
   }
 
   isAdmin() {

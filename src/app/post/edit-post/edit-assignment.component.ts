@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   IAssignment,
   ISubject,
-} from '../../shared/interfaces/subject.interface';
+} from '../../shared/interfaces/other.interface';
 import { StudentsService } from '../../shared/services/students.service';
 import { SubjectsService } from '../../shared/services/subjects.service';
 import { Student } from '../../shared/interfaces/person.interface';

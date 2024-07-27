@@ -3,10 +3,10 @@ import { Assignment } from '../../object/object.model';
 import { Observable, forkJoin, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { LoggingService } from './logging.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpParams,HttpHeaders } from '@angular/common/http';
 import { delay } from 'rxjs/operators';
 // importation des données de test
-import { IObject } from '../interfaces/subject.interface';
+import { IObject ,ICategory} from '../interfaces/other.interface';
 import { urls } from './urls';
 
 @Injectable({
@@ -16,92 +16,37 @@ export class TrocService {
   assignments: Assignment[] = [];
 
   constructor(private logService: LoggingService, private http: HttpClient) {}
-  // uri = 'http://localhost:8010/api/assignments';
-  //uri = 'https://angularmbdsmadagascar2024.onrender.com/api/assignments';
-
-  // retourne tous les assignments
-  getAssignments(): Observable<IObject[]> {
-    return this.http.get<IObject[]>(urls.assignments.get);
-  }
-/*
-  getAssignmentsPagines(page: number, limit: number): Observable<any> {
-    return this.http.get<IObject[]>(
-      urls.objects.get + '?page=' + page + '&limit=' + limit
-    );
-  }
-*/
 
 
-private generateFakeData(): IObject[] {
-  return [
-    {
-      _id: '1',
-      name: 'Object 1',
-      category: 'Category 1',
-      categoryId: 'cat1',
-      owner: {
-        _id: 'owner1',
-        name: 'Owner 1',
-        email: 'owner1@example.com'
-      },
-      photo: ['photo1.jpg']
-    },
-    {
-      _id: '2',
-      name: 'Object 2',
-      category: 'Category 2',
-      categoryId: 'cat2',
-      owner: {
-        _id: 'owner2',
-        name: 'Owner 2',
-        email: 'owner2@example.com'
-      },
-      photo: ['photo2.jpg']
-    }
-    // Ajoutez autant de fausses données que nécessaire
-  ];
-}
 
 getObjectPagines(page: number, limit: number): Observable<any> {
-  const fakeData = this.generateFakeData();
-  const startIndex = (page - 1) * limit;
-  const paginatedData = fakeData.slice(startIndex, startIndex + limit);
 
-  const response = {
-    objects: paginatedData,
-    totalDocs: fakeData.length,
-    totalPages: Math.ceil(fakeData.length / limit),
-    nextPage: page * limit < fakeData.length ? page + 1 : null,
-    prevPage: page > 1 ? page - 1 : null,
-    hasNextPage: page * limit < fakeData.length,
-    hasPrevPage: page > 1
-  };
+  const params = new HttpParams()
+  .set('page', page.toString())
+  .set('limit', limit.toString());
 
-  return of(response).pipe(delay(1000)); 
+  return this.http.get<IObject>(urls.objects.get+'/pagin', { params }).pipe(
+    catchError(
+      this.handleError<any>(
+        '### catchError: getAssignments'
+      )
+    ));
+
 
 }
 
   getObject(id: number): Observable<IObject | undefined> {
-    return this.http.get<Object>(urls.objects.get + '/' + id).pipe(
+    return this.http.get<IObject>(urls.objects.get + '/allData/' + id).pipe(
       catchError(
         this.handleError<any>(
           '### catchError: getAssignments by id avec id=' + id
         )
-      )
-      /*
-      map(a => {
-        a.nom += " MODIFIE PAR LE PIPE !"
-        return a;
-      }),
-      tap(a => console.log("Dans le pipe avec " + a.nom)),
-      map(a => {
-        a.nom += " MODIFIE UNE DEUXIEME FOIS PAR LE PIPE !";
-        return a;
-      })
-      */
-    );
-    //let a = this.assignments.find(a => a.id === id);
-    //return of(a);
+      ));
+   
+  }
+
+  getCategories(): Observable<ICategory[]> {
+    return this.http.get<ICategory[]>(urls.categoties.get);
   }
 
   private handleError<T>(operation: any, result?: T) {
@@ -114,16 +59,24 @@ getObjectPagines(page: number, limit: number): Observable<any> {
   }
 
   // ajoute un assignment et retourne une confirmation
-  addAssignment(assignment: IObject): Observable<any> {
-    return this.http.post<Assignment>(urls.assignments.post, assignment);
+  addObject( name: string, description: string, categoryId: number, ownerId: number,photos:string[]): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = { name,description,categoryId,ownerId,photos};
+    return this.http.post<IObject>(urls.assignments.post,body,{ headers: headers });
   }
 
-  updateAssignment(assignment: IObject): Observable<any> {
-    return this.http.put<Assignment>(urls.assignments.put, assignment);
+  updateObject(id:string,name: string , description: string ,categoryId:number,ownerId:number,photos:string[]): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = { name,description,categoryId,ownerId,photos};
+    console.log(body);
+
+   return this.http.put<IObject>(urls.objects.put+'/'+id, body, { headers: headers });
   }
 
-  deleteAssignment(assignment: IObject): Observable<any> {
-    return this.http.delete(urls.assignments.delete + '/' + assignment._id);
+
+
+  deleteObject(object: IObject): Observable<any> {
+    return this.http.delete(urls.objects.delete + '/' + object.id);
   }
 
   getStat() {

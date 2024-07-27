@@ -22,7 +22,7 @@ export class AuthService {
   // auprès d'un serveur...
   isLoggedIn() {
     const promesse = new Promise((resolve, reject) => {
-      const logIn = localStorage.getItem('login');
+      const logIn = localStorage.getItem('authToken');
       let valueReturn = false;
       if (logIn !== null) {
         valueReturn = true;

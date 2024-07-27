@@ -9,7 +9,7 @@ import { TrocService } from '../../shared/services/troc.service';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { UtilityService } from '../../shared/services/utility.service';
-import { IObject } from '../../shared/interfaces/subject.interface';
+import { IObject } from '../../shared/interfaces/other.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthPopupComponent } from '../../popups/auth-popup/auth-popup.component';
 @Component({
@@ -25,9 +25,8 @@ import { AuthPopupComponent } from '../../popups/auth-popup/auth-popup.component
   templateUrl: './object-detail.component.html',
   styleUrl: './object-detail.component.css',
 })
-export class AssignmentDetailComponent implements OnInit {
+export class ObjectDetailComponent implements OnInit {
   object!: IObject | undefined;
-  isAuthorizedToDelete = false;
   constructor(
     private trocService: TrocService,
     private authService: AuthService,
@@ -46,28 +45,26 @@ export class AssignmentDetailComponent implements OnInit {
     const id = this.route.snapshot.params['id'];
     // On utilise le service pour récupérer l'assignment avec cet id
     this.trocService.getObject(id).subscribe((object) => {
+      console.log(object);
       this.object = object;
     });
-    this.isAuthorizedToDelete = this.authService.isAdmin();
+
   }
 
   handleDelete() {
-    if (!this.isAuthorizedToDelete) {
-      this.dialog.open(AuthPopupComponent);
-      return;
-    }
     if (this.object) {
+      console.log(this.object);
       this.trocService
-        .deleteAssignment(this.object)
+        .deleteObject(this.object)
         .subscribe((message) => {
           this.object = undefined;
-          this.router.navigate(['/app/assignments']);
+          this.router.navigate(['/app/objects']);
         });
     }
   }
 
   handleUpdate() {
-    this.router.navigate(['/app/assignment/edit/' + this.object?._id]);
+    this.router.navigate(['/app/object/edit/' + this.object?.id]);
   }
 
   isAdmin() {

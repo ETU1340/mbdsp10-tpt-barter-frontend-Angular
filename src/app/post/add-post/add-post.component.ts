@@ -19,7 +19,7 @@ import { Student } from '../../shared/interfaces/person.interface';
 import {
   IAssignment,
   ISubject,
-} from '../../shared/interfaces/subject.interface';
+} from '../../shared/interfaces/other.interface';
 @Component({
   selector: 'app-add-assignment-stepper',
   providers: [provideNativeDateAdapter()],

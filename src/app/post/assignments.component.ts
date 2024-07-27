@@ -21,7 +21,7 @@ import { Router, RouterLink } from '@angular/router';
 import { filter, map, pairwise, tap, throttleTime } from 'rxjs/operators';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import {} from 'ngx-spinner';
-import { IAssignment } from '../shared/interfaces/subject.interface';
+import { IAssignment } from '../shared/interfaces/other.interface';
 @Component({
   selector: 'app-assignments',
   standalone: true,

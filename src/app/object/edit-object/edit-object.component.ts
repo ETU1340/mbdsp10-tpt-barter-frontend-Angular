@@ -7,22 +7,16 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { TrocService } from '../../shared/services/troc.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  IObject,
-  ISubject,
-} from '../../shared/interfaces/subject.interface';
-import { StudentsService } from '../../shared/services/students.service';
-import { Student } from '../../shared/interfaces/person.interface';
-import { StudentCardComponent } from '../../students/student-card/student-card.component';
+import { IObject } from '../../shared/interfaces/other.interface';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 
 @Component({
-  selector: 'app-edit-assignment',
+  selector: 'app-edit-object',
   standalone: true,
   providers: [provideNativeDateAdapter()],
   templateUrl: './edit-object.component.html',
-  styleUrl: './edit-object.component.css',
+  styleUrls: ['./edit-object.component.css'],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -31,104 +25,89 @@ import { MatSelectModule } from '@angular/material/select';
     MatFormFieldModule,
     MatDatepickerModule,
     MatButtonModule,
-    StudentCardComponent,
     MatSelectModule,
   ],
 })
-export class EditAssignmentComponent implements OnInit {
-  assignment: IObject | undefined;
+export class EditObjectComponent implements OnInit {
+  object: IObject | undefined;
   // Pour les champs de formulaire
+  description = '';
   name = '';
-  dateRendu?: Date = undefined;
-  mark = 10;
-  remark = '';
-
-  students: Student[] = [];
-  subjects: ISubject[] = [];
-
+  photos: string[] = [];
+  categoryId :number | undefined;
+  categories: { id: number, title: string }[] = []; // Liste des catégories
   showModal = false;
 
   constructor(
-    private assignmentsService: TrocService,
+    private objectService: TrocService,
     private router: Router,
-    private route: ActivatedRoute,
-    private studentsService: StudentsService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.params['id'];
-    /*
-    this.studentsService.getStudents().subscribe((data) => {
-      this.students = data;
-    });
-    this.subjectsService.getSubjects().subscribe((data) => {
-      this.subjects = data;
-    });
-    this.assignmentsService.getAssignment(id).subscribe((assignment) => {
-      this.assignment = assignment;
-      console.log(assignment);
-
-      if (assignment !== undefined) {
-        this.name = assignment.name;
-      //  this.dateRendu = assignment.dateRendu;
+    this.objectService.getObject(id).subscribe((object) => {
+      
+      this.object = object;
+      console.log(this.object);
+      if (object !== undefined) {
+        this.name = object.name;
+        this.description = object.description;
+        this.photos = object.photo || [];
       }
     });
-    */
+
+    this.loadCategories();
   }
-  handleStudentChange(index: number) {
-    /*
-    this.assignment!.student = {
-      name:
-        this.students[index].name.first + ' ' + this.students[index].name.last,
-      profile: this.students[index].picture.medium,
-      _id: this.students[index]._id,
-    };
-    this.toggleModal();
-    */
+
+  handleCategoryChange(event: any) {
+    const selectedCategory = this.categories[event.value];
+    if (this.object && selectedCategory) {
+      this.categoryId  = selectedCategory.id;
+    }
   }
-  handleSubjectChange(event: any) {
-    /*
-    this.assignment!.subject = {
-      name: this.subjects[event.value].title,
-      picture: this.subjects[event.value].picture,
-      _id: this.subjects[event.value]._id,
-    };
-    this.assignment!.teacher = {
-      fullName: this.subjects[event.value].teacher.fullName,
-      picture: this.subjects[event.value].teacher.picture,
-      _id: this.subjects[event.value].teacher._id,
-    };
-    */
+  handlePhotoUpload(event: any) {
+    const files = event.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.photos.push(e.target.result.split(',')[1]); // On sauvegarde uniquement la partie base64
+        };
+        reader.readAsDataURL(files[i]);
+      }
+    }
   }
+  loadCategories() {
+    // Supposons que le service possède une méthode pour obtenir les catégories
+    this.objectService.getCategories().subscribe((categories) => {
+      console.log(categories);
+      this.categories = categories;
+
+    });
+  }
+
   toggleModal() {
     this.showModal = !this.showModal;
   }
-  handleUpdate() {
-    if (!this.assignment) return;
-    if (this.name == '' || this.dateRendu === undefined) return;
-    console.log(this.remark);
 
-    this.assignment.name = this.name;
-   // this.assignment.dateRendu = this.dateRendu;
-   // this.assignment.mark = this.mark;
-    //this.assignment.remark = this.remark;
-    this.assignmentsService
-      .updateAssignment(this.assignment)
-      .subscribe((message) => {
-        console.log(message);
-        this.router.navigate([
-          '/app/assignment/details/' + this.assignment!._id,
-        ]);
-      });
+  handleUpdate() {
+    if (!this.object) return;
+    if (this.name === '' || this.description === '' || this.categoryId === undefined) return;
+    // Assurez-vous de mettre à jour les autres champs nécessaires
+
+    this.objectService.updateObject(this.object.id,this.name,this.description,this.categoryId,parseInt(this.object.owner.id),this.photos).subscribe((message) => {
+      console.log(message);
+      this.router.navigate(['/app/object/details/' + this.object!.id]);
+    });
   }
+
   handleDelete() {
-    if (this.assignment) {
-      this.assignmentsService
-        .deleteAssignment(this.assignment)
-        .subscribe((message) => {
-          this.assignment = undefined;
-          this.router.navigate(['/app/assignments']);
-        });
+    if (this.object) {
+      this.objectService.deleteObject(this.object).subscribe((message) => {
+        this.object = undefined;
+        this.router.navigate(['/app/objects']);
+      });
     }
   }
 }

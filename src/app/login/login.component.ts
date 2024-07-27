@@ -36,8 +36,10 @@ export class LoginComponent {
       .logInConnexion(this.username, this.password)
       .subscribe((reponse) => {
         if (reponse !== false) {
+          console.log(reponse);
           this.errorMessage = '';
-          localStorage.setItem('login', reponse.isAdmin);
+          localStorage.setItem('authToken', reponse.token);
+          localStorage.setItem('userId', reponse.user.id);
           this.router.navigate(['/app']);
         } else {
           this.errorMessage = 'Information incorrecte';

@@ -39,7 +39,7 @@
   >
     <div
       *ngFor="let assignment of assignments"
-      (click)="handleAssignmentCardClick(assignment._id!)"
+      (click)="handleAssignmentCardClick(assignment.id!)"
       [ngClass]="{
         'bg-yellow-100': assignment.mark && !assignment.isHanded,
         'bg-green-50': assignment.isHanded,
