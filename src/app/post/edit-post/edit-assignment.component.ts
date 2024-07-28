@@ -5,14 +5,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { AssignmentsService } from '../../shared/services/troc.service';
+import { AssignmentsService } from '../../shared/services/object.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   IAssignment,
   ISubject,
 } from '../../shared/interfaces/other.interface';
 import { StudentsService } from '../../shared/services/students.service';
-import { SubjectsService } from '../../shared/services/subjects.service';
+import { SubjectsService } from '../../shared/services/posts.service';
 import { Student } from '../../shared/interfaces/person.interface';
 import { StudentCardComponent } from '../../students/student-card/student-card.component';
 import { CommonModule } from '@angular/common';

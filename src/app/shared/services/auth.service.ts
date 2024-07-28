@@ -7,6 +7,7 @@ import {
 import { Observable, throwError, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { urls } from './urls';
+import { RouterOutlet, RouterLink, Router } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
@@ -14,7 +15,7 @@ export class AuthService {
   // propriété pour savoir si l'utilisateur est connecté
   loggedIn = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient ,   private router: Router) {}
   // uri = "http://localhost:8010/api/teachers";
   // méthode pour connecter l'utilisateur
   // Typiquement, il faudrait qu'elle accepte en paramètres
@@ -68,8 +69,12 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('login');
+    console.log('atooooo');
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userId');
     this.loggedIn = false;
+    this.router.navigate(['/login']);
+
   }
 
   isAdmin() {

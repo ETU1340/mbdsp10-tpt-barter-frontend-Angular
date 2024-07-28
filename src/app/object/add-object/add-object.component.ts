@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { TrocService } from '../../shared/services/troc.service';
+import { ObjectService } from '../../shared/services/object.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IObject } from '../../shared/interfaces/other.interface';
 import { CommonModule } from '@angular/common';
@@ -37,7 +37,7 @@ export class AddObjectComponent implements OnInit {
   categories: { id: number, title: string }[] = [];
   
   constructor(
-    private objectService: TrocService,
+    private objectService: ObjectService,
     private router: Router
   ) {}
 

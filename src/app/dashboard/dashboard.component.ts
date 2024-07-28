@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TrocService } from '../shared/services/troc.service';
+import { ObjectService } from '../shared/services/object.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,9 +15,9 @@ export class DashboardComponent {
         nbExchangeSuccess: number;
       }
     | undefined;
-  constructor(private trocService: TrocService) {}
+  constructor(private ObjectService: ObjectService) {}
   ngOnInit(): void {
-    this.trocService.getStat().subscribe((data: any) => {
+    this.ObjectService.getStat().subscribe((data: any) => {
       console.log(data);
       this.stat = data;
     });

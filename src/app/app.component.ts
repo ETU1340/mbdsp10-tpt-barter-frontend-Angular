@@ -8,7 +8,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ObjectComponent } from './object/object.component';
 import { TeachersComponent } from './teachers/teachers.component';
 import { AuthService } from './shared/services/auth.service';
-import { TrocService } from './shared/services/troc.service';
+import { ObjectService } from './shared/services/object.service';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 
@@ -44,7 +44,7 @@ export class AppComponent {
 
   constructor(
     private authService: AuthService,
-    private assignmentsService: TrocService,
+    private assignmentsService: ObjectService,
     private router: Router
   ) {}
 

@@ -11,8 +11,8 @@
     <div class="flex flex-col h-fit lg:flex-row">
       <div class="flex-1 h-full">
         <img
-          *ngIf="object.photo && object.photo.length > 0"
-          [src]="object.photo[0]"
+          *ngIf="object.photos && object.photos.length > 0"
+          [src]="object.photos[0]"
           class="h-44 w-44 rounded-full mx-auto"
           alt="{{ object.name }}"
         />

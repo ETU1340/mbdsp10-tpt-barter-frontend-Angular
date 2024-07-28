@@ -7,13 +7,9 @@ export const urls = {
   subjects: {
     get: baseurl + 'subjects',
   },
-  assignments: {
-    post: baseurl + 'assignments',
-    get: baseurl + 'assignments',
-    put: baseurl + 'assignments',
-    delete: baseurl + 'assignments',
-    returned: baseurl + 'assignmentReturned',
-    notReturned: baseurl + 'assignmentNotReturned',
+  posts:{
+    post: baseurl + 'posts',
+    get: baseurl + 'posts'
   },
   stat: {
     get: baseurl + 'stat',
@@ -28,7 +24,7 @@ export const urls = {
     login: baseurl + 'auth/login',
     register:  baseurl + 'auth/register'
   },
-  categoties: {
+  categories: {
     get: baseurl + 'categories',
   },
   objects: {

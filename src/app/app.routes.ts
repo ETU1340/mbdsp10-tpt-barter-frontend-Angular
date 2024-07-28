@@ -8,7 +8,8 @@ import { EditObjectComponent } from './object/edit-object/edit-object.component'
 import { authGuard } from './shared/auth.guard';
 import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { isAdmin } from './shared/isAdmin.guard';
+import { PostComponent } from './post/posts.component';
+import { AddPostComponent } from './post/add-post/add-post.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -18,13 +19,17 @@ export const routes: Routes = [
     path: 'app',
     component: AppLayoutComponent,
     children: [
-      { path: '', component: DashboardComponent, canActivate: [authGuard] },
+      { path: '', 
+        component: DashboardComponent, 
+        canActivate: [authGuard] },
       {
-        path: 'add',
+        path: 'object/add',
         component: AddObjectComponent,
         canActivate: [authGuard],
       },
-      { path: 'objects', component: ObjectComponent },
+      { path: 'objects',
+        component: ObjectComponent ,
+        canActivate: [authGuard]},
       {
         path: 'object/:id',
         component: ObjectDetailComponent,
@@ -39,6 +44,12 @@ export const routes: Routes = [
         path: 'object/details/:id',
         component: ObjectDetailComponent,
         canActivate: [authGuard],
+      },
+      { path: 'posts', 
+        component: PostComponent,
+      },
+      { path: 'post/add', 
+        component: AddPostComponent,
       },
     ],
   },

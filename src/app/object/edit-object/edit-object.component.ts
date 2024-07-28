@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { TrocService } from '../../shared/services/troc.service';
+import { ObjectService } from '../../shared/services/object.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IObject } from '../../shared/interfaces/other.interface';
 import { CommonModule } from '@angular/common';
@@ -39,7 +39,7 @@ export class EditObjectComponent implements OnInit {
   showModal = false;
 
   constructor(
-    private objectService: TrocService,
+    private objectService: ObjectService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -53,7 +53,7 @@ export class EditObjectComponent implements OnInit {
       if (object !== undefined) {
         this.name = object.name;
         this.description = object.description;
-        this.photos = object.photo || [];
+        this.photos = object.photos || [];
       }
     });
 

@@ -16,7 +16,7 @@ import { RenduDirective } from '../shared/rendu.directive';
 import { Assignment } from './object.model';
 //import { AssignmentDetailComponent } from './detail-object/assignment-detail.component';
 //import { AddObjectComponent } from './add-object/add-object.component';
-import { TrocService } from '../shared/services/troc.service';
+import { ObjectService } from '../shared/services/object.service';
 import { Router, RouterLink } from '@angular/router';
 import { filter, map, pairwise, tap, throttleTime } from 'rxjs/operators';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
@@ -69,7 +69,7 @@ export class ObjectComponent implements OnInit {
 
   // ici on injecte le service
   constructor(
-    private assignmentsService: TrocService,
+    private assignmentsService: ObjectService,
     private ngZone: NgZone, // private spinner: NgxSpinnerService
     private router: Router
   ) {}

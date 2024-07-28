@@ -15,7 +15,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { ObjectComponent } from '../../object/object.component';
 import { TeachersComponent } from '../../teachers/teachers.component';
-import { TrocService } from '../../shared/services/troc.service';
+import { ObjectService } from '../../shared/services/object.service';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
@@ -50,7 +50,7 @@ export class AppLayoutComponent {
   showFiller = true;
   constructor(
     private authService: AuthService,
-    private assignmentsService: TrocService,
+    private assignmentsService: ObjectService,
     private router: Router
   ) {}
   ngOnInit(): void {}
@@ -58,7 +58,7 @@ export class AppLayoutComponent {
     // on utilise le service d'autentification
     // pour se connecter ou se déconnecter
     this.authService.logout();
-    this.router.navigate(['/login']);
+
     // on navigue vers la page d'accueil
   }
 }

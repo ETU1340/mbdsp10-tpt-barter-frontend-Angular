@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { TrocService } from '../../shared/services/troc.service';
+import { ObjectService } from '../../shared/services/object.service';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { UtilityService } from '../../shared/services/utility.service';
@@ -28,7 +28,7 @@ import { AuthPopupComponent } from '../../popups/auth-popup/auth-popup.component
 export class ObjectDetailComponent implements OnInit {
   object!: IObject | undefined;
   constructor(
-    private trocService: TrocService,
+    private ObjectService: ObjectService,
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
@@ -44,7 +44,7 @@ export class ObjectDetailComponent implements OnInit {
     // On recupere l'id de l'assignment dans l'URL à l'aide de ActivatedRoute
     const id = this.route.snapshot.params['id'];
     // On utilise le service pour récupérer l'assignment avec cet id
-    this.trocService.getObject(id).subscribe((object) => {
+    this.ObjectService.getObject(id).subscribe((object) => {
       console.log(object);
       this.object = object;
     });
@@ -54,7 +54,7 @@ export class ObjectDetailComponent implements OnInit {
   handleDelete() {
     if (this.object) {
       console.log(this.object);
-      this.trocService
+      this.ObjectService
         .deleteObject(this.object)
         .subscribe((message) => {
           this.object = undefined;
