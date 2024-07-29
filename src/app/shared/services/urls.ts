@@ -9,7 +9,9 @@ export const urls = {
   },
   posts:{
     post: baseurl + 'posts',
-    get: baseurl + 'posts'
+    get: baseurl + 'posts',
+    put: baseurl + 'posts',
+    delete: baseurl + 'posts'
   },
   stat: {
     get: baseurl + 'stat',

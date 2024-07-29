@@ -23,4 +23,13 @@ export class PostService {
     const body = { authorId,objectIds};
     return this.http.post(urls.posts.post, body);
   }
+
+  updatePost( objectIds: number[]): Observable<any> {
+    const body = { objectIds};
+    return this.http.put<any>(urls.posts.put, body);
+  }
+
+  deletePost(postId: number): Observable<any> {
+    return this.http.delete<any>(urls.posts.delete + "/" +postId);
+  }
 }

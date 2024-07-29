@@ -1,16 +1,6 @@
 <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
-  <mat-form-field>
-    <mat-label>Titre du post</mat-label>
-    <input matInput formControlName="title" />
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label>Description du post</mat-label>
-    <input matInput formControlName="description" />
-  </mat-form-field>
-
   <cdk-virtual-scroll-viewport itemSize="200" class="object-list">
-    <mat-grid-list cols="6" rowHeight="200px">
+    <mat-grid-list cols="5" rowHeight="200px">
       <mat-grid-tile *cdkVirtualFor="let object of objects">
         <mat-card class="object-card">
           <div class="checkbox-container">
@@ -24,6 +14,5 @@
       </mat-grid-tile>
     </mat-grid-list>
   </cdk-virtual-scroll-viewport>
-
   <button mat-raised-button type="submit">Créer le post</button>
 </form>

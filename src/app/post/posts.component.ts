@@ -6,6 +6,10 @@ import { map, pairwise, filter, throttleTime, tap } from 'rxjs/operators';
 import { IPost } from '../shared/interfaces/other.interface';
 import { PostService } from '../shared/services/posts.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { EditPostComponent } from './edit-post/edit-post.component';
+import { DeletePostComponent } from './delete-post/delete-post.component';
 
 @Component({
   selector: 'app-post',
@@ -17,7 +21,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     ScrollingModule,
     NgFor,
     CommonModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
   ],
 })
 export class PostComponent implements OnInit {
@@ -39,7 +43,9 @@ export class PostComponent implements OnInit {
   constructor(
     private postService: PostService,
     private ngZone: NgZone,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -98,6 +104,42 @@ export class PostComponent implements OnInit {
         this.page = this.nextPage;
         this.getPostsFromServiceForInfiniteScroll();
       });
+    });
+  }
+
+
+  editPost(post: any): void {
+    const dialogRef = this.dialog.open(EditPostComponent, {
+      width: '600px',
+      data: { post }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getPostsFromService();
+        this.snackBar.open('Post modifié avec succès', 'Fermer', {
+          duration: 2000,
+        });
+      }
+    });
+  }
+
+ 
+  deletePost(post: any): void {
+    const dialogRef = this.dialog.open(DeletePostComponent, {
+      width: '400px',
+      data: { post }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.postService.deletePost(post.id).subscribe(() => {
+          this.getPostsFromService();
+          this.snackBar.open('Post supprimé avec succès', 'Fermer', {
+            duration: 2000,
+          });
+        });
+      }
     });
   }
 }

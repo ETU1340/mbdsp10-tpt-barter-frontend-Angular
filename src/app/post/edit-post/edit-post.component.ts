@@ -1,12 +1,7 @@
-// add-post.component.ts
-
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup} from '@angular/forms';
-import { ScrollingModule,CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { CommonModule, NgFor } from '@angular/common';
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PostService } from '../../shared/services/posts.service';
-import { ObjectService } from '../../shared/services/object.service';
-import {IObject } from '../../shared/interfaces/other.interface';
 import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,12 +12,16 @@ import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { ScrollingModule,CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { CommonModule, NgFor } from '@angular/common';
+import { ObjectService } from '../../shared/services/object.service';
+import {IObject } from '../../shared/interfaces/other.interface';
 
 @Component({
-  selector: 'app-add-post',
-  templateUrl: './add-post.component.html',
-  styleUrls: ['./add-post.component.css'],
-   standalone: true,
+  selector: 'app-edit-post',
+  templateUrl: './edit-post.component.html',
+  styleUrls: ['./edit-post.component.css'],
+  standalone: true,
   imports: [
     MatOptionModule,
     MatInputModule,
@@ -39,31 +38,37 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatCardModule,
     MatGridListModule
   ],
+
 })
-export class AddPostComponent implements OnInit {
+export class EditPostComponent {
   postForm: FormGroup;
   objects: IObject[] = [];
-  selectedObjectIds: number[] = [];
+  selectedObjectIds: number[];
   userId: number = 0;
 
   constructor(
+    public dialogRef: MatDialogRef<EditPostComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     private objectService: ObjectService,
     private postService: PostService
   ) {
+    this.selectedObjectIds = data.post.objects.map((obj: any) => obj.id);
     this.postForm = this.fb.group({
+      objectIds: [this.selectedObjectIds]
     });
   }
 
   ngOnInit(): void {
     this.userId = Number(localStorage.getItem('userId'));
-    this.objectService.getObjectsByOwner(this.userId).subscribe((data:any) => {
-      this.objects = data;
+    // Récupérer les objets disponibles
+    this.objectService.getObjectsByOwner(this.userId).subscribe((objects: any) => {
+      this.objects = objects;
+      this.selectedObjectIds = this.data.post.objects.map((object: any) => object.id);
     });
   }
-
-  onObjectSelect(objectId: number, isSelected: boolean): void {
-    if (isSelected) {
+  onObjectSelect(objectId: number, checked: boolean): void {
+    if (checked) {
       this.selectedObjectIds.push(objectId);
     } else {
       this.selectedObjectIds = this.selectedObjectIds.filter(id => id !== objectId);
@@ -71,19 +76,14 @@ export class AddPostComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('yess');
     if (this.postForm.valid) {
-      console.log('no');
-      console.log(this.selectedObjectIds);
-      this.postService.createPost(this.userId ,this.selectedObjectIds).subscribe(
-        (response) => {
-          console.log('Post created successfully', response);
-        },
-        (error) => {
-          console.error('Error creating post', error);
-        }
-      );
+      this.postService.updatePost(this.selectedObjectIds).subscribe(() => {
+        this.dialogRef.close(true);
+      });
     }
   }
 
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

@@ -1,18 +1,24 @@
 <div class="post-container">
-  <div *ngFor="let post of posts" class="post-card">
-    <h2>{{ post.author.name }}</h2>
-    <p>{{ post.createdAt | date:'short' }}</p>
+  <div *ngFor="let post of posts" class="post-card mat-elevation-z3">
+    <div class="post-header">
+      <h2>{{ post.author.name }}</h2>
+      <p>{{ post.createdAt | date:'short' }}</p>
+    </div>
     <div class="post-content">
-      <div *ngFor="let objectPost of post.objects">
-        <img *ngIf="objectPost.object.photos.length > 0" src="../assets/basket.jpg" alt="Object photo">
+      <div *ngFor="let objectPost of post.objects" class="object-container">
+        <img *ngIf="objectPost.object.photos.length > 0" src="../../assets/basket.jpg" alt="{{ objectPost.object.name }}" class="object-image">
         <p>{{ objectPost.object.name }}</p>
       </div>
+    </div>
+    <div class="post-actions">
+      <button mat-button (click)="editPost(post)">Modifier</button>
+      <button mat-button (click)="deletePost(post.id)">Supprimer</button>
     </div>
   </div>
   <ngx-spinner *ngIf="isLoading" type="ball-scale-multiple"></ngx-spinner>
 </div>
 <cdk-virtual-scroll-viewport itemSize="50" class="scroller" #scroller>
   <div *ngFor="let post of posts" class="post-item">
-    <!-- Post content -->
+    <!-- Contenu du post -->
   </div>
 </cdk-virtual-scroll-viewport>
