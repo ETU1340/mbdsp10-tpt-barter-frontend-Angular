@@ -2,19 +2,21 @@
 
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { MatSelectChange } from '@angular/material/select';
+import { ScrollingModule,CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { CommonModule, NgFor } from '@angular/common';
 import { PostService } from '../../shared/services/posts.service';
-import { AuthService } from '../../shared/services/auth.service';
 import { ObjectService } from '../../shared/services/object.service';
-import { UtilityService } from '../../shared/services/utility.service';
-import { IPost, IObject } from '../../shared/interfaces/other.interface';
+import {IObject } from '../../shared/interfaces/other.interface';
 import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { ReactiveFormsModule } from '@angular/forms'; // Ajoutez ceci
+import { MatListModule } from '@angular/material/list';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @Component({
   selector: 'app-add-post',
@@ -29,67 +31,62 @@ import { MatSelectModule } from '@angular/material/select';
     MatSelectModule,
     NgFor,
     CommonModule,
+    ReactiveFormsModule,
+    ScrollingModule,
+    MatListModule,
+    MatCheckboxModule,
+    CdkVirtualScrollViewport,
+    MatCardModule,
+    MatGridListModule
   ],
 })
 export class AddPostComponent implements OnInit {
   postForm: FormGroup;
   objects: IObject[] = [];
-  selectedObjects: IObject[] = [];
+  selectedObjectIds: number[] = [];
   userId: number = 0;
-  objectIds: number[] = [];
 
   constructor(
     private fb: FormBuilder,
-    private postService: PostService,
-    private authService: AuthService,
     private objectService: ObjectService,
-    private router: Router,
-    private utilityService: UtilityService
+    private postService: PostService
   ) {
     this.postForm = this.fb.group({
-      authorId: ['', Validators.required],
-      objects: this.fb.array([]),
+      title: ['', Validators.required],
+      description: ['', Validators.required],
     });
   }
 
   ngOnInit(): void {
     this.userId = Number(localStorage.getItem('userId'));
     this.objectService.getObjectsByOwner(this.userId).subscribe((data:any) => {
+      console.log(data);
       this.objects = data;
     });
   }
 
-  get objectsArray(): FormArray {
-    return this.postForm.get('objects') as FormArray;
+  onObjectSelect(objectId: number, isSelected: boolean): void {
+    if (isSelected) {
+      this.selectedObjectIds.push(objectId);
+    } else {
+      this.selectedObjectIds = this.selectedObjectIds.filter(id => id !== objectId);
+    }
   }
 
-  addObject() {
-    this.objectsArray.push(this.fb.group({
-      objectId: ['', Validators.required],
-    }));
-  }
-
-  removeObject(index: number) {
-    this.objectsArray.removeAt(index);
-  }
-
-  onObjectSelect(event: MatSelectChange, index: number) {
-    this.objectsArray.at(index).get('objectId')?.setValue(event.value);
-  }
-
-  onSubmit() {
+  onSubmit(): void {
+    console.log('yess');
     if (this.postForm.valid) {
-        this.objectIds = this.postForm.value.objects.map((obj: any) => obj.objectId);
-        this.postService.createPost(this.userId,this.objectIds).subscribe(
-        (response:any) => {
-          console.log('Post added successfully', response);
-          this.utilityService.showSuccessMessage('Post added successfully');
-          this.router.navigate(['/posts']);
+      console.log('no');
+      console.log(this.selectedObjectIds);
+      this.postService.createPost(this.userId ,this.selectedObjectIds).subscribe(
+        (response) => {
+          console.log('Post created successfully', response);
         },
-        (error:any) => {
-          console.error('Error adding post', error);
+        (error) => {
+          console.error('Error creating post', error);
         }
       );
     }
   }
+
 }

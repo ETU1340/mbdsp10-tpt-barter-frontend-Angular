@@ -1,8 +1,23 @@
-.form {
-  display:flex;
-  flex-direction: column;
-  margin:5px;
+.object-list {
+  height: 600px; /* Ajustez selon votre besoin */
 }
-.buttonNext {
-  color: green;
+
+.object-card {
+  width: 180px; /* Largeur fixe pour chaque carte */
+  height: 180px; /* Hauteur fixe pour chaque carte */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.object-card img {
+  height: 100px; /* Ajustez selon votre besoin */
+  object-fit: cover;
+}
+
+.checkbox-container {
+  position: absolute;
+  top: 8px; /* Ajustez selon l'espacement souhaité */
+  right: 8px; /* Ajustez selon l'espacement souhaité */
+  z-index: 1; /* Assure que le checkbox est au-dessus des autres éléments */
 }

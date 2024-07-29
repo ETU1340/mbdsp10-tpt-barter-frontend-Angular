@@ -1,18 +1,29 @@
-<!-- add-post.component.html -->
-
 <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
-  <div formArrayName="objects">
-    <div *ngFor="let object of objectsArray.controls; let i=index" [formGroupName]="i">
-      <mat-form-field>
-        <mat-label>Object</mat-label>
-        <mat-select (selectionChange)="onObjectSelect($event, i)">
-          <mat-option *ngFor="let obj of objects" [value]="obj.id">{{ obj.name }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <button mat-button type="button" (click)="removeObject(i)">Remove</button>
-    </div>
-  </div>
+  <mat-form-field>
+    <mat-label>Titre du post</mat-label>
+    <input matInput formControlName="title" />
+  </mat-form-field>
 
-  <button mat-button type="button" (click)="addObject()">Add Object</button>
-  <button mat-raised-button color="primary" type="submit" [disabled]="!postForm.valid">Add Post</button>
+  <mat-form-field>
+    <mat-label>Description du post</mat-label>
+    <input matInput formControlName="description" />
+  </mat-form-field>
+
+  <cdk-virtual-scroll-viewport itemSize="200" class="object-list">
+    <mat-grid-list cols="6" rowHeight="200px">
+      <mat-grid-tile *cdkVirtualFor="let object of objects">
+        <mat-card class="object-card">
+          <div class="checkbox-container">
+            <mat-checkbox (change)="onObjectSelect(object.id, $event.checked)"></mat-checkbox>
+          </div>
+          <mat-card-header>
+            <mat-card-title>{{ object.name }}</mat-card-title>
+          </mat-card-header>
+          <img mat-card-image src="../../assets/basket.jpg" alt="{{ object.name }}">
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </cdk-virtual-scroll-viewport>
+
+  <button mat-raised-button type="submit">Créer le post</button>
 </form>

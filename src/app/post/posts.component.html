@@ -4,7 +4,7 @@
     <p>{{ post.createdAt | date:'short' }}</p>
     <div class="post-content">
       <div *ngFor="let objectPost of post.objects">
-        <img *ngIf="objectPost.object.photos.length > 0" [src]="objectPost.object.photos[0]" alt="Object photo">
+        <img *ngIf="objectPost.object.photos.length > 0" src="../assets/basket.jpg" alt="Object photo">
         <p>{{ objectPost.object.name }}</p>
       </div>
     </div>
