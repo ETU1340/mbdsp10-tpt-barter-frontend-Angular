@@ -14,7 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { ObjectComponent } from '../../object/object.component';
-import { TeachersComponent } from '../../teachers/teachers.component';
 import { ObjectService } from '../../shared/services/object.service';
 import { AuthService } from '../../shared/services/auth.service';
 
@@ -31,7 +30,6 @@ import { AuthService } from '../../shared/services/auth.service';
     ObjectComponent,
     MatSidenavModule,
     NgIconComponent,
-    TeachersComponent,
   ],
   templateUrl: './app-layout.component.html',
   styleUrl: './app-layout.component.css',

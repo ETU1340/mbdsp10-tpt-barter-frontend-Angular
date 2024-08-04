@@ -30,6 +30,7 @@ export class PostService {
   }
 
   deletePost(postId: number): Observable<any> {
+    console.log(postId);
     return this.http.delete<any>(urls.posts.delete + "/" +postId);
   }
 }

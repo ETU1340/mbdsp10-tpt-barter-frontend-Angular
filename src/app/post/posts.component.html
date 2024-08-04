@@ -1,21 +1,35 @@
 <div class="post-container">
-  <div *ngFor="let post of posts" class="post-card mat-elevation-z3">
+  <div *ngFor="let post of posts" class="post-card mat-elevation-z3"  (click)="showPostDetails(post)">
     <div class="post-header">
-      <h2>{{ post.author.name }}</h2>
-      <p>{{ post.createdAt | date:'short' }}</p>
-    </div>
-    <div class="post-content">
-      <div *ngFor="let objectPost of post.objects" class="object-container">
-        <img *ngIf="objectPost.object.photos.length > 0" src="../../assets/basket.jpg" alt="{{ objectPost.object.name }}" class="object-image">
-        <p>{{ objectPost.object.name }}</p>
+      <div class="author-info">
+        <img src="../../assets/basket.jpg" alt="{{ post.author.name }}" class="author-photo">
+        <h2>{{ post.author.name }}</h2>
+      </div>
+      <div class="post-actions">
+        <button mat-icon-button (click)="editPost(post)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="deletePost(post)">
+          <mat-icon>delete</mat-icon>
+        </button>
       </div>
     </div>
-    <div class="post-actions">
-      <button mat-button (click)="editPost(post)">Modifier</button>
-      <button mat-button (click)="deletePost(post.id)">Supprimer</button>
+    <div class="post-content">
+      <ul>
+        <div *ngFor="let objectPost of post.objects" class="object-container">
+          <li>{{ objectPost.object.name }}</li>
+        </div>
+      </ul>
+    </div>
+    <div class="post-footer">
+      <p class="post-date">{{ getRelativeDate(post.createdAt) }}</p>
     </div>
   </div>
-  <ngx-spinner *ngIf="isLoading" type="ball-scale-multiple"></ngx-spinner>
+  <div class="spinner-host"  *ngIf="isLoading" >
+    <div class="spinner"   ></div>
+  </div>
+
+
 </div>
 <cdk-virtual-scroll-viewport itemSize="50" class="scroller" #scroller>
   <div *ngFor="let post of posts" class="post-item">

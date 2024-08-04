@@ -19,8 +19,7 @@ import { Assignment } from './object.model';
 import { ObjectService } from '../shared/services/object.service';
 import { Router, RouterLink } from '@angular/router';
 import { filter, map, pairwise, tap, throttleTime } from 'rxjs/operators';
-import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
-import {} from 'ngx-spinner';
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { IObject } from '../shared/interfaces/other.interface';
 @Component({
   selector: 'app-object',
@@ -46,7 +45,7 @@ import { IObject } from '../shared/interfaces/other.interface';
   ],
 })
 export class ObjectComponent implements OnInit {
-  titre = 'Liste des objets';
+  titre = 'MES OBJETS';
   // Pour la pagination
   page = 0;
   limit = 10;

@@ -17,8 +17,7 @@ export interface IObject {
     email: string;
   };
   photos: string[];
-  posts: any[]; // Vous pouvez définir une interface spécifique pour les posts si nécessaire
-  suggestions: any[]; // Vous pouvez définir une interface spécifique pour les suggestions si nécessaire
+  deletedAt?: Date;
   createdAt: string;
   updatedAt: string;
 }

@@ -1,50 +1,82 @@
 .post-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 16px;
+  margin: 10px;
+  background-color: #FFFFFF;
 }
 
 .post-card {
-  background: white;
-  padding: 16px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ADADAD;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #FFFFFF;
+  ;
 }
 
 .post-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 8px;
-  margin-bottom: 16px;
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+}
+
+.author-photo {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin-left: 10px;
 }
 
 .post-content {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  margin-top: 10px;
 }
 
 .object-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100px;
+  margin: 10px 0;
 }
 
-.object-image {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 4px;
-  margin-bottom: 8px;
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-date {
+  font-size: 0.9em;
+  color: gray;
 }
 
 .post-actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 16px;
+  justify-content: flex-start;
+}
+
+.spinner-host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height to center vertically */
+}
+
+
+.spinner {
+  border: 8px solid #f3f3f3; /* Light grey */
+  border-top: 8px solid #49A856; /* Blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+  margin: auto;
+
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

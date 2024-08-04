@@ -6,7 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ObjectComponent } from './object/object.component';
-import { TeachersComponent } from './teachers/teachers.component';
 import { AuthService } from './shared/services/auth.service';
 import { ObjectService } from './shared/services/object.service';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -30,7 +29,6 @@ import { heroHome } from '@ng-icons/heroicons/outline';
     ObjectComponent,
     MatSidenavModule,
     NgIconComponent,
-    TeachersComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

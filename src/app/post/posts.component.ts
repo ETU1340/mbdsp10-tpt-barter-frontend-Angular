@@ -1,15 +1,19 @@
 import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
-import { CdkVirtualScrollViewport,  ScrollingModule } from '@angular/cdk/scrolling';
-import { CommonModule, NgFor } from '@angular/common';
+import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule, NgFor,NgStyle } from '@angular/common';
 import { Router } from '@angular/router';
 import { map, pairwise, filter, throttleTime, tap } from 'rxjs/operators';
 import { IPost } from '../shared/interfaces/other.interface';
 import { PostService } from '../shared/services/posts.service';
-import { NgxSpinnerModule } from 'ngx-spinner';
+import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { EditPostComponent } from './edit-post/edit-post.component';
 import { DeletePostComponent } from './delete-post/delete-post.component';
+import { formatDistanceToNow } from 'date-fns';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { PostDetailComponent } from './details-post/detail-post.component';
 
 @Component({
   selector: 'app-post',
@@ -20,8 +24,11 @@ import { DeletePostComponent } from './delete-post/delete-post.component';
     CdkVirtualScrollViewport,
     ScrollingModule,
     NgFor,
+    NgStyle,
     CommonModule,
     NgxSpinnerModule,
+    MatIconModule,
+    MatButtonModule,
   ],
 })
 export class PostComponent implements OnInit {
@@ -45,7 +52,8 @@ export class PostComponent implements OnInit {
     private ngZone: NgZone,
     private router: Router,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit() {
@@ -55,7 +63,7 @@ export class PostComponent implements OnInit {
   getPostsFromService() {
     this.isLoading = true;
     this.postService.getPosts(this.page, this.limit).subscribe(
-      (data :any) => {
+      (data: any) => {
         console.log(data);
         this.posts = data.posts;
         this.totalDocs = data.totalDocs;
@@ -66,7 +74,7 @@ export class PostComponent implements OnInit {
         this.hasPrevPage = this.page > 0;
         this.isLoading = false;
       },
-      (error:any) => {
+      (error: any) => {
         console.error('Error fetching posts:', error);
         this.isLoading = false;
       }
@@ -75,7 +83,7 @@ export class PostComponent implements OnInit {
 
   getPostsFromServiceForInfiniteScroll() {
     this.postService.getPosts(this.page, this.limit).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.posts = [...this.posts, ...data.posts];
         this.totalDocs = data.totalDocs;
         this.totalPages = data.totalPages;
@@ -84,7 +92,7 @@ export class PostComponent implements OnInit {
         this.hasNextPage = data.hasMore;
         this.hasPrevPage = this.page > 0;
       },
-      (error:any) => {
+      (error: any) => {
         console.error('Error fetching posts:', error);
       }
     );
@@ -107,7 +115,6 @@ export class PostComponent implements OnInit {
     });
   }
 
-
   editPost(post: any): void {
     const dialogRef = this.dialog.open(EditPostComponent, {
       width: '600px',
@@ -124,7 +131,6 @@ export class PostComponent implements OnInit {
     });
   }
 
- 
   deletePost(post: any): void {
     const dialogRef = this.dialog.open(DeletePostComponent, {
       width: '400px',
@@ -141,5 +147,16 @@ export class PostComponent implements OnInit {
         });
       }
     });
+  }
+
+  showPostDetails(post: IPost): void {
+    this.dialog.open(PostDetailComponent, {
+      width: '800px',
+      data: { post }
+    });
+  }
+
+  getRelativeDate(date: Date): string {
+    return formatDistanceToNow(new Date(date), { addSuffix: true });
   }
 }

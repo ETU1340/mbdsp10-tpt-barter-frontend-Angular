@@ -77,7 +77,7 @@ getObjectPagines(page: number, limit: number): Observable<any> {
 
 
   deleteObject(object: IObject): Observable<any> {
-    return this.http.delete(urls.objects.delete + '/' + object.id);
+    return this.http.delete(urls.objects.delete + '/status/' + object.id);
   }
 
   private handleError<T>(operation: any, result?: T) {

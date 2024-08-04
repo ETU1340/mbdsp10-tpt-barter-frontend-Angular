@@ -1,11 +1,13 @@
 <div class="w-full h-full relative">
-  <div
-    *ngIf="isLoading"
-    class="h-full w-full flex justify-center items-center z-50 absolute top-0 left-0"
-  >
-    <div class="loader"></div>
+  <div class="spinner-host"   *ngIf="isLoading">
+    <div class="spinner"   ></div>
   </div>
-  <h1 class="m-0">{{ titre }}</h1>
+
+  <div
+    class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-5 mb-10"
+    *ngIf="!isLoading"
+  >
+  <h1 class="m-0 text-xl font-extrabold text-300"   style="color:#49A856">{{ titre }}</h1>
   <mat-paginator
   #paginator
   class="mt-5 bg-transparent rounded-lg border border-neutral-100"
@@ -18,10 +20,6 @@
   aria-label="Select page"
 >
   </mat-paginator>
-  <div
-    class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-5 mb-10"
-    *ngIf="!isLoading"
-  >
     <div
       *ngFor="let object of objects"
       (click)="handleObjectCardClick(object.id!)"
@@ -37,10 +35,10 @@
         />
         <div class="flex flex-col gap-2">
           <p class="m-0 text-sm">
-            <span class="font-bold">Name: </span>{{ object.name }}
+            <span class="font-bold"></span>{{ object.name }}
           </p>
           <p class="m-0 text-sm">
-            <span class="font-bold">Owner: </span>{{ object.owner.name }}
+            <span class="font-bold"> </span>{{ object.description }}
           </p>
           <p class="m-0 text-sm">
             <span class="font-bold">Category: </span>{{ object.category.title }}
