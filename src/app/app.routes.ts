@@ -20,7 +20,7 @@ export const routes: Routes = [
     component: AppLayoutComponent,
     children: [
       { path: '', 
-        component: DashboardComponent, 
+        component: PostComponent, 
         canActivate: [authGuard] },
       {
         path: 'object/add',
