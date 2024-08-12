@@ -43,8 +43,12 @@ import {IObject } from '../../shared/interfaces/other.interface';
 export class EditPostComponent {
   postForm: FormGroup;
   objects: IObject[] = [];
+  filteredObjects: IObject[] = [];
   selectedObjectIds: number[];
-  userId: number = 0;
+  userId: number ;
+  postId: number ;
+  isLoading = false;
+  userObject = JSON.parse(localStorage.getItem('user')!);
 
   constructor(
     public dialogRef: MatDialogRef<EditPostComponent>,
@@ -54,18 +58,32 @@ export class EditPostComponent {
     private postService: PostService
   ) {
     this.selectedObjectIds = data.post.objects.map((obj: any) => obj.id);
+    this.userId = Number(this.userObject.id);
+    this.postId = data.post.id;
     this.postForm = this.fb.group({
       objectIds: [this.selectedObjectIds]
     });
   }
 
   ngOnInit(): void {
-    this.userId = Number(localStorage.getItem('userId'));
+    this.isLoading = true;
     // Récupérer les objets disponibles
     this.objectService.getObjectsByOwner(this.userId).subscribe((objects: any) => {
       this.objects = objects;
+      this.filteredObjects = this.objects;
+      console.log(this.filteredObjects);
       this.selectedObjectIds = this.data.post.objects.map((object: any) => object.id);
+      this.isLoading = false;
+    },
+    (error: any) => {
+      console.error('Error fetching posts:', error);
+      this.isLoading = false;
     });
+  }
+
+  filterObjects(event: Event) {
+    const query = (event.target as HTMLInputElement).value;
+    this.filteredObjects = this.objects.filter(object => object.name.toLowerCase().includes(query.toLowerCase()));
   }
   onObjectSelect(objectId: number, checked: boolean): void {
     if (checked) {
@@ -77,7 +95,7 @@ export class EditPostComponent {
 
   onSubmit(): void {
     if (this.postForm.valid) {
-      this.postService.updatePost(this.selectedObjectIds).subscribe(() => {
+      this.postService.addSuggestToPost(this.postId,this.selectedObjectIds,Number(this.userObject.id)).subscribe(() => {
         this.dialogRef.close(true);
       });
     }

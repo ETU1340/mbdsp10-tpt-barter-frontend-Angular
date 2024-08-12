@@ -1,0 +1,38 @@
+<div class="messenger-container">
+    <div class="contacts-list">
+      <div *ngFor="let contact of contacts" class="contact-item"     (click)="loadChat(contact.idChat!)">
+        <img  src="../../assets/avatar.jpg" alt="Avatar" class="contact-avatar" />
+        <div class="contact-info">
+          <h4>{{ contact.name }}</h4>
+          <p>{{ contact.lastMessage }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="chat-container">
+      <div class="chat-header">
+        <img src="../../assets/avatar.jpg" alt="Avatar" class="chat-avatar" />
+        <!--
+         <div class="chat-info">
+          <h4>{{ selectedChat?.receiver?.name }}</h4>
+          <p>{{ selectedChat?.receiver?.username }}</p>
+        </div>
+        -->
+       
+
+      </div>
+      <div  *ngIf="selectedChat" class="chat-messages">
+        <div *ngFor="let message of selectedChat?.messages" 
+        [ngClass]="{
+          'message-receiver': message.author === 'currentUser',
+        'message-sender': message.author !== 'currentUser'
+      }">
+          <p>{{ message.text }}</p>
+          <small>{{ message.timestamp | date: 'shortTime' }}</small>
+        </div>
+      </div>
+      <div class="chat-input">
+        <input type="text" placeholder="Type a message..." [(ngModel)]="newMessage" />
+        <button (click)="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>

@@ -1,3 +1,7 @@
+
+<div class="spinner-host"   *ngIf="isLoading">
+  <div class="spinner"   ></div>
+</div>
 <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
   <cdk-virtual-scroll-viewport itemSize="200" class="object-list">
     <mat-grid-list cols="5" rowHeight="200px">

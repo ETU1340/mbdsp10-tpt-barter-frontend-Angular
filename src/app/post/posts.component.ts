@@ -14,6 +14,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { PostDetailComponent } from './details-post/detail-post.component';
+import { SuggestionsComponent } from './suggestion/suggestions.component';
 
 @Component({
   selector: 'app-post',
@@ -155,6 +156,18 @@ export class PostComponent implements OnInit {
       data: { post }
     });
   }
+
+  openSuggestions(post: IPost): void {
+    const dialogRef = this.dialog.open(SuggestionsComponent, {
+      width: '600px',
+      data: { post }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Traitement après la fermeture du modal
+    });
+  }
+
 
   getRelativeDate(date: Date): string {
     return formatDistanceToNow(new Date(date), { addSuffix: true });

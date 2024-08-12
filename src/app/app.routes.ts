@@ -10,6 +10,7 @@ import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PostComponent } from './post/posts.component';
 import { AddPostComponent } from './post/add-post/add-post.component';
+import {ChatComponent} from './chat/chat.component'
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -50,6 +51,9 @@ export const routes: Routes = [
       },
       { path: 'post/add', 
         component: AddPostComponent,
+      },
+      { path: 'chats', 
+        component: ChatComponent,
       },
     ],
   },

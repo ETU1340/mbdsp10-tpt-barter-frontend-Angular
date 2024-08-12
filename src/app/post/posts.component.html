@@ -2,24 +2,30 @@
   <div *ngFor="let post of posts" class="post-card mat-elevation-z3"  (click)="showPostDetails(post)">
     <div class="post-header">
       <div class="author-info">
-        <img src="../../assets/basket.jpg" alt="{{ post.author.name }}" class="author-photo">
+        <img src="../../assets/avatar.jpg" alt="{{ post.author.name }}" class="author-photo">
         <h2>{{ post.author.name }}</h2>
       </div>
       <div class="post-actions">
-        <button mat-icon-button (click)="editPost(post)">
+        <button mat-icon-button (click)="editPost(post);  $event.stopPropagation()">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button (click)="deletePost(post)">
+
+        <button mat-icon-button (click)="openSuggestions(post); $event.stopPropagation()">
+          <mat-icon>suggestion</mat-icon>
+        </button>
+        <button mat-icon-button (click)="deletePost(post); $event.stopPropagation()">
           <mat-icon>delete</mat-icon>
         </button>
       </div>
     </div>
     <div class="post-content">
-      <ul>
-        <div *ngFor="let objectPost of post.objects" class="object-container">
-          <li>{{ objectPost.object.name }}</li>
+
+        <div  class="object-container">
+          <ul>
+          <li *ngFor="let objectPost of post.objects">{{ objectPost.object.name }}</li>
+        </ul>
         </div>
-      </ul>
+
     </div>
     <div class="post-footer">
       <p class="post-date">{{ getRelativeDate(post.createdAt) }}</p>

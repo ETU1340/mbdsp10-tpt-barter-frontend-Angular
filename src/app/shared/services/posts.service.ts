@@ -24,13 +24,24 @@ export class PostService {
     return this.http.post(urls.posts.post, body);
   }
 
-  updatePost( objectIds: number[]): Observable<any> {
-    const body = { objectIds};
-    return this.http.put<any>(urls.posts.put, body);
+  updatePost( postId: number ,objectIds: number[]): Observable<any> {
+    const body = {objectIds};
+    return this.http.put<any>(urls.posts.put+'/'+postId, body);
   }
 
+  addSuggestToPost( postId: number ,objects: number[], suggestedById: number): Observable<any> {
+    const body = {objects,suggestedById};
+    return this.http.post<any>(urls.posts.suggest +'/'+postId, body);
+  }
+
+
+  getSuggestPost( postId: number): Observable<any> {
+    return this.http.get<any>(urls.posts.suggest +'/'+postId);
+  }
+
+
+
   deletePost(postId: number): Observable<any> {
-    console.log(postId);
     return this.http.delete<any>(urls.posts.delete + "/" +postId);
   }
 }

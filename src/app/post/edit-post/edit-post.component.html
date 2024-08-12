@@ -1,26 +1,37 @@
-<h1>Modifier le post</h1>
-<form [formGroup]="postForm" (ngSubmit)="onSubmit()">
-  <cdk-virtual-scroll-viewport itemSize="200" class="object-list">
-    <mat-grid-list cols="4" rowHeight="200px">
-      <mat-grid-tile *cdkVirtualFor="let object of objects">
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>{{ object.name }}</mat-card-title>
-          </mat-card-header>
-          <img mat-card-image src="../../../assets/basket.jpg">
-          <mat-card-content>
-            <mat-checkbox 
-              [checked]="selectedObjectIds.includes(object.id)"
-              (change)="onObjectSelect(object.id, $event.checked)">
-            </mat-checkbox>
-          </mat-card-content>
-        </mat-card>
-      </mat-grid-tile>
-    </mat-grid-list>
-  </cdk-virtual-scroll-viewport>
 
-  <div class="actions">
-    <button mat-raised-button type="submit" color="primary">Sauvegarder</button>
-    <button mat-raised-button type="button" (click)="onNoClick()">Annuler</button>
+<h1>Suggérer des objets</h1>
+
+<div class="modal-container">
+  <div class="spinner-host" *ngIf="isLoading">
+    <div class="spinner"></div>
   </div>
-</form>
+  <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Rechercher des objets</mat-label>
+      <input matInput (input)="filterObjects($event)" placeholder="Entrez le nom de l'objet">
+    </mat-form-field>
+    <cdk-virtual-scroll-viewport itemSize="200" class="object-list">
+      <mat-grid-list cols="3" rowHeight="200px">
+        <mat-grid-tile *cdkVirtualFor="let object of filteredObjects">
+          <mat-card class="object-card">
+            <mat-card-header>
+              <mat-card-title>{{ object.name }}</mat-card-title>
+            </mat-card-header>
+            <img mat-card-image src="../../../assets/basket.jpg">
+            <mat-card-content>
+              <mat-checkbox 
+                class="object-checkbox"
+                [checked]="selectedObjectIds.includes(object.id)"
+                (change)="onObjectSelect(object.id, $event.checked)">
+              </mat-checkbox>
+            </mat-card-content>
+          </mat-card>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </cdk-virtual-scroll-viewport>
+    <div class="actions">
+      <button mat-raised-button type="submit" color="primary">Sauvegarder</button>
+      <button mat-raised-button type="button" (click)="onNoClick()">Annuler</button>
+    </div>
+  </form>
+</div>

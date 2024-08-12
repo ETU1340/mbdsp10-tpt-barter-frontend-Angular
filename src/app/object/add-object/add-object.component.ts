@@ -70,7 +70,8 @@ export class AddObjectComponent implements OnInit {
       categoryId: this.categoryId,
       photos: this.photos // Pour la prévisualisation seulement
     };
-    this.ownerId =   Number(localStorage.getItem('userId'));
+    const   userObject = JSON.parse(localStorage.getItem('user')!);
+    this.ownerId =   Number(userObject.id);
     this.objectService.addObject( this.name,this.description,this.categoryId,this.ownerId,this.photos).subscribe((response:any) => {
       this.router.navigate(['/app/objects']);
     });

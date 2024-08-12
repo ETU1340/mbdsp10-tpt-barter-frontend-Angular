@@ -1,60 +1,52 @@
-/* posts.component.css */
-
-.post-container {
-  width: 100%;
+.modal-container {
+  width: 30vw;
+  height: 80vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-
-.post-card {
-  width: 100%;
-  max-width: 600px;
-  margin: 10px 0;
-  padding: 15px;
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.post-header {
-  display: flex;
   justify-content: space-between;
-  align-items: center;
+  position: relative;
 }
 
-.author-info {
-  display: flex;
-  align-items: center;
+.spinner-host {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.author-photo {
-  width: 50px;
-  height: 50px;
+.spinner {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #49A856; /* Green */
   border-radius: 50%;
-  margin-right: 10px;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
 }
 
-.post-actions button {
-  margin-left: 5px;
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-.post-content {
-  margin-top: 10px;
-  margin-right: 10px;
+.object-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-top: 20px;
+  height:100% ;
+  width: 100%;
 }
 
-.object-container {
-  list-style: none;
+
+mat-form-field {
+  width: 100%;
 }
 
-.post-footer {
-  margin-top: 15px;
-  display: flex;
-  justify-content: flex-start;
+.object-card {
+  position: relative;
 }
 
-.post-date {
-  font-size: 0.9rem;
-  color: #757575;
+.object-checkbox {
+  position: absolute;
+  top: 8px;
+  right: 8px;
 }

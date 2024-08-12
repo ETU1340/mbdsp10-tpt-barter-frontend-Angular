@@ -45,6 +45,8 @@ export class AddPostComponent implements OnInit {
   objects: IObject[] = [];
   selectedObjectIds: number[] = [];
   userId: number = 0;
+  isLoading = false;
+  userObject = JSON.parse(localStorage.getItem('user')!);
 
   constructor(
     private fb: FormBuilder,
@@ -56,9 +58,15 @@ export class AddPostComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userId = Number(localStorage.getItem('userId'));
+    this.isLoading = true;
+    this.userId = Number(this.userObject.id);
     this.objectService.getObjectsByOwner(this.userId).subscribe((data:any) => {
       this.objects = data;
+      this.isLoading = false;
+    },
+    (error: any) => {
+      console.error('Error fetching posts:', error);
+      this.isLoading = false;
     });
   }
 

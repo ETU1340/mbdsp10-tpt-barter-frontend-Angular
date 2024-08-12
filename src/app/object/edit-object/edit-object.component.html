@@ -1,4 +1,6 @@
 <!-- src/app/edit-object/edit-object.component.html -->
+<div class="flex justify-center items-center min-h-screen">
+
 <div class="w-11/12 mx-auto bg-white px-12 py-10">
   <h1 class="text-center">Édition de l'objet {{ object?.name }}</h1>
   <form
@@ -12,10 +14,9 @@
         <div class="flex-1">
         <div *ngIf="photos.length > 0">
           <div *ngFor="let photo of photos" class="mt-2">
-            <img [src]="'data:image/*;base64,' + photo" class="w-12 h-12 object-cover" />
+            <img [src]="photo" class="w-12 h-12 object-cover" />
           </div>
         </div>
-          <h4 class="text-center">{{ object?.name }}</h4>
         </div>
       </div>
       <div class="mt-5 flex flex-col flex-1">
@@ -54,11 +55,6 @@
             multiple
             style="display: none"
           />
-          <div *ngIf="photos.length > 0">
-            <div *ngFor="let photo of photos" class="mt-2">
-              <img [src]="photo" class="w-12 h-12 object-cover" />
-            </div>
-          </div>
         </div>
         <div class="flex gap-4 mt-10">
           <button
@@ -89,4 +85,5 @@
       </div>
     </div>
   </form>
+</div>
 </div>

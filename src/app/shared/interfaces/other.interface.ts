@@ -1,7 +1,10 @@
 export interface IUser {
   id: number;
   name: string;
-  profilePicture: string;
+  username: string;
+  email: string;
+  idChat? : string;
+  lastMessage? : string;
 }
 export interface IObject {
   id: string;
@@ -59,3 +62,16 @@ export interface ICategory {
   title: string;
 }
 
+
+export interface IMessage {
+  author: string;
+  text: string;
+  timestamp: Date;
+}
+
+export interface IChat {
+  _id:string;
+  sender: IUser;
+  receiver: IUser;
+  messages: IMessage[];
+}

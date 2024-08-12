@@ -39,7 +39,9 @@ export class LoginComponent {
           console.log(reponse);
           this.errorMessage = '';
           localStorage.setItem('authToken', reponse.token);
-          localStorage.setItem('userId', reponse.user.id);
+          const userJson = JSON.stringify(reponse.user);
+          console.log(userJson);
+          localStorage.setItem('user',userJson);
           this.router.navigate(['/app']);
         } else {
           this.errorMessage = 'Information incorrecte';

@@ -40,6 +40,15 @@
 .object-container {
   margin: 10px 0;
 }
+ul {
+list-style-type: disc;
+padding-left: 20px; /* Ajoute un espacement à gauche pour que les points soient bien visibles */
+}
+
+li {
+margin-bottom: 5px; /* Optionnel : ajoute un peu d'espace entre chaque élément */
+}
+
 
 .post-footer {
   display: flex;

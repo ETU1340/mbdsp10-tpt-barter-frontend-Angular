@@ -1,0 +1,26 @@
+<!-- suggestions-modal.component.html -->
+<h1>Suggestions pour le Post</h1>
+
+<!-- <div *ngIf="suggestions.length === 0">
+  <p>Aucune suggestion trouvée.</p>
+</div> -->
+<div style = "height: 600px">
+
+    <div *ngFor="let suggestion of suggestions" class="suggestion-item">
+        <div class="author-info">
+          <img [src]="suggestion.author.photoUrl" alt="{{ suggestion.author.name }}" class="author-photo">
+          <h3>{{ suggestion.author.name }}</h3>
+        </div>
+        <div class="suggested-objects">
+          <ul>
+            <li *ngFor="let obj of suggestion.suggestedObject">
+              {{ obj.object.name }} - {{ obj.object.description }}
+            </li>
+          </ul>
+        </div>
+      </div>
+</div>
+
+
+<!-- Ajouter un bouton pour fermer le modal -->
+<button mat-raised-button color="primary" (click)="onNoClick()">Fermer</button>

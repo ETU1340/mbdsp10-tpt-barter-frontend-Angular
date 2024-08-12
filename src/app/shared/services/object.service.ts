@@ -43,7 +43,7 @@ getObjectPagines(page: number, limit: number): Observable<any> {
    
   }
   getObjectsByOwner(id: number): Observable<IObject | undefined> {
-    return this.http.get<IObject>(urls.objects.get + '/owner/' + id).pipe(
+    return this.http.get<IObject>(urls.objects.get + '/objectOwner/' + id).pipe(
       catchError(
         this.handleError<any>(
           '### catchError: getAssignments by id avec id=' + id

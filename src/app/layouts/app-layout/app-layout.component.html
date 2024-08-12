@@ -34,6 +34,16 @@
         <ng-icon name="bootstrapPlusLg" size="27"></ng-icon> Nouvelle objet
       </a>
     </div>
+    
+    <div class="bg-100 mx-5 mt-5 px-6 py-4 rounded-xl drawer">
+      <a
+        class="drawer-link"
+        routerLink="/app/chats"
+      >
+        <ng-icon name="bootstrapList" size="27"></ng-icon> Fil de discussion
+      </a>
+    
+    </div>
   </mat-drawer>
 
   <div class="h-screen px-5 py-5 flex flex-col">
@@ -48,9 +58,7 @@
       </button>
       <button (click)="login()" class="logout-button">Logout</button>
     </div>
-
-    
       <router-outlet class="h-full w-full"></router-outlet>
-
+    
   </div>
 </mat-drawer-container>
