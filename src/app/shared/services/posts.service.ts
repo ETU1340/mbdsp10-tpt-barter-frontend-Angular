@@ -31,17 +31,26 @@ export class PostService {
 
   addSuggestToPost( postId: number ,objects: number[], suggestedById: number): Observable<any> {
     const body = {objects,suggestedById};
-    return this.http.post<any>(urls.posts.suggest +'/'+postId, body);
+    return this.http.post<any>(urls.suggestion.post +'/'+postId, body);
+  }
+
+  validationSuggest(suggestionId: number): Observable<any> {
+    const body = {status:'ACCEPTED'};
+    return this.http.patch<any>(urls.suggestion.post +'/status/'+suggestionId, body);
   }
 
 
+
+
+
   getSuggestPost( postId: number): Observable<any> {
-    return this.http.get<any>(urls.posts.suggest +'/'+postId);
+    return this.http.get<any>(urls.suggestion.get +'/'+postId);
   }
 
 
 
   deletePost(postId: number): Observable<any> {
+    console.log(postId);
     return this.http.delete<any>(urls.posts.delete + "/" +postId);
   }
 }

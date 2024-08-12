@@ -1,10 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PostService } from '../../shared/services/posts.service';
+import { ObjectService } from '../../shared/services/object.service';
 import { IPost } from '../../shared/interfaces/other.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule, NgFor,NgStyle } from '@angular/common';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -26,7 +28,9 @@ export class SuggestionsComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<SuggestionsComponent>,
    @Inject(MAT_DIALOG_DATA) public data: { post: IPost },
-    private postService: PostService
+    private postService: PostService,
+    private objectService: ObjectService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -40,8 +44,33 @@ export class SuggestionsComponent implements OnInit {
   private loadSuggestions(): void {
     this.postService.getSuggestPost(this.data.post.id).subscribe(
       response => {
-        this.suggestions = response.suggestions; // Assurez-vous que le format de réponse est correct
+        console.log(response.data);
+        this.suggestions = response.data; // Assurez-vous que le format de réponse est correct
         console.log( this.suggestions);
+      },
+      error => {
+        console.error('Erreur lors de la récupération des suggestions', error);
+      }
+    );
+  }
+
+
+  validateSuggestion(suggestion:any): void {
+    this.postService.validationSuggest(suggestion.id).subscribe(
+      response => {
+        suggestion.suggestedObject.map( (object: any)  =>{
+          this.objectService.exchangeObject(object.id,suggestion.suggestedById).subscribe(
+            response => {
+              this.postService.deletePost(suggestion.postId).subscribe( response => {
+              this.onNoClick();
+              this.router.navigate(['/app/posts']);
+              }
+              );
+            },
+            error => {
+              console.error('Erreur lors de la récupération des suggestions', error);
+            });
+        });
       },
       error => {
         console.error('Erreur lors de la récupération des suggestions', error);

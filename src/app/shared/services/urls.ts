@@ -8,6 +8,10 @@ export const urls = {
     delete: baseurl + 'posts',
     suggest: baseurl + 'posts/suggestion',
   },
+  suggestion: {
+    get: baseurl + 'suggestions',
+    post:baseurl + 'suggestions'
+  },
   stat: {
     get: baseurl + 'stat',
   },

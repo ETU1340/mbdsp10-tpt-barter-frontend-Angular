@@ -74,6 +74,15 @@ getObjectPagines(page: number, limit: number): Observable<any> {
    return this.http.put<IObject>(urls.objects.put+'/'+id, body, { headers: headers });
   }
 
+  exchangeObject(idObject: number,ownerId:number): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = { ownerId};
+    console.log(body);
+
+   return this.http.put<IObject>(urls.objects.put+'/owner/'+idObject, body, { headers: headers });
+  }
+
+
 
 
   deleteObject(object: IObject): Observable<any> {

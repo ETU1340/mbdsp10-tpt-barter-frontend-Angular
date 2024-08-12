@@ -42,6 +42,9 @@ export class PostComponent implements OnInit {
   prevPage!: number;
   hasNextPage!: boolean;
   hasPrevPage!: boolean;
+  userObject = JSON.parse(localStorage.getItem('user')!);
+  currentUserId: number = Number(this.userObject.id) ;
+
 
   posts: IPost[] = [];
   isLoading = false;

@@ -1,41 +1,48 @@
 <div class="post-container">
-  <div *ngFor="let post of posts" class="post-card mat-elevation-z3"  (click)="showPostDetails(post)">
+  <div *ngFor="let post of posts" class="post-card mat-elevation-z3" (click)="showPostDetails(post)">
     <div class="post-header">
       <div class="author-info">
         <img src="../../assets/avatar.jpg" alt="{{ post.author.name }}" class="author-photo">
         <h2>{{ post.author.name }}</h2>
       </div>
       <div class="post-actions">
-        <button mat-icon-button (click)="editPost(post);  $event.stopPropagation()">
-          <mat-icon>edit</mat-icon>
+        <ng-container *ngIf="post.author.id !== currentUserId">
+        <!-- Afficher le bouton "add" pour tous les utilisateurs -->
+        <button mat-icon-button (click)="editPost(post); $event.stopPropagation()">
+          <mat-icon>add</mat-icon>
         </button>
-
-        <button mat-icon-button (click)="openSuggestions(post); $event.stopPropagation()">
-          <mat-icon>suggestion</mat-icon>
+        <button mat-icon-button (click)="editPost(post); $event.stopPropagation()">
+          <mat-icon>chat</mat-icon>
         </button>
-        <button mat-icon-button (click)="deletePost(post); $event.stopPropagation()">
-          <mat-icon>delete</mat-icon>
-        </button>
+        
+        
+      </ng-container>
+        <!-- Afficher les boutons "delete" et "list" uniquement si l'utilisateur connecté est l'auteur -->
+        <ng-container *ngIf="post.author.id === currentUserId">
+          <button mat-icon-button (click)="openSuggestions(post); $event.stopPropagation()">
+            <mat-icon>list</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deletePost(post); $event.stopPropagation()">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </ng-container>
       </div>
     </div>
     <div class="post-content">
-
-        <div  class="object-container">
-          <ul>
+      <div class="object-container">
+        <ul>
           <li *ngFor="let objectPost of post.objects">{{ objectPost.object.name }}</li>
         </ul>
-        </div>
-
+      </div>
     </div>
     <div class="post-footer">
       <p class="post-date">{{ getRelativeDate(post.createdAt) }}</p>
     </div>
   </div>
-  <div class="spinner-host"  *ngIf="isLoading" >
-    <div class="spinner"   ></div>
+  
+  <div class="spinner-host" *ngIf="isLoading">
+    <div class="spinner"></div>
   </div>
-
-
 </div>
 <cdk-virtual-scroll-viewport itemSize="50" class="scroller" #scroller>
   <div *ngFor="let post of posts" class="post-item">
