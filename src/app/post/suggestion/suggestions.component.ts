@@ -6,8 +6,7 @@ import { IPost } from '../../shared/interfaces/other.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule, NgFor,NgStyle } from '@angular/common';
-import { Router } from '@angular/router';
-
+import { UtilityService} from '../../shared/services/utility.service';
 
 @Component({
   selector: 'app-suggestions-modal',
@@ -22,16 +21,25 @@ import { Router } from '@angular/router';
     MatButtonModule,
   ],
 })
+
 export class SuggestionsComponent implements OnInit {
   suggestions: any[] = [];
-
+  userId: number;
+  post: IPost;
+  exchangeSuggestedObj: boolean = false;
+  exchangePostObj: boolean = false;
+  userObject = JSON.parse(localStorage.getItem('user')!);
+  isLoading = true;
   constructor(
     public dialogRef: MatDialogRef<SuggestionsComponent>,
    @Inject(MAT_DIALOG_DATA) public data: { post: IPost },
     private postService: PostService,
     private objectService: ObjectService,
-    private router: Router,
-  ) {}
+    private utilityService: UtilityService,
+  ) {
+    this.post = data.post;
+    this.userId = Number(this.userObject.id);
+  }
 
   ngOnInit(): void {
     this.loadSuggestions();
@@ -45,36 +53,72 @@ export class SuggestionsComponent implements OnInit {
     this.postService.getSuggestPost(this.data.post.id).subscribe(
       response => {
         console.log(response.data);
-        this.suggestions = response.data; // Assurez-vous que le format de réponse est correct
+        this.suggestions = response.data; 
+        this.isLoading = false; // Assurez-vous que le format de réponse est correct
         console.log( this.suggestions);
       },
       error => {
+        this.isLoading = false; 
         console.error('Erreur lors de la récupération des suggestions', error);
       }
     );
   }
 
 
-  validateSuggestion(suggestion:any): void {
+  validateSuggestion(suggestion: any): void {
     this.postService.validationSuggest(suggestion.id).subscribe(
-      response => {
-        suggestion.suggestedObject.map( (object: any)  =>{
-          this.objectService.exchangeObject(object.id,suggestion.suggestedById).subscribe(
-            response => {
-              this.postService.deletePost(suggestion.postId).subscribe( response => {
-              this.onNoClick();
-              this.router.navigate(['/app/posts']);
-              }
-              );
-            },
-            error => {
-              console.error('Erreur lors de la récupération des suggestions', error);
-            });
-        });
+      async response => {
+        try {
+          // Étape 1: Échanger les objets suggérés
+          const exchangeSuggestedObj = await this.exchangeSuggestedObjects(suggestion.suggestedObject, this.userId);
+          if (!exchangeSuggestedObj) {
+            throw new Error("Erreur lors de l'échange des objets suggérés");
+          }
+  console.log(exchangeSuggestedObj);
+          // Étape 2: Échanger les objets du post
+          const exchangePostObj = await this.exchangePostObjects(this.post.objects, suggestion.suggestedById);
+          console.log(exchangePostObj);
+          if (!exchangePostObj) {
+            throw new Error("Erreur lors de l'échange des objets du post");
+          }
+  
+          // Étape 3: Supprimer le post
+          await this.postService.deletePost(suggestion.postId).toPromise();
+          
+          // Réussite
+          this.onNoClick();
+          this.utilityService.showSuccessMessage("Échange effectué avec succès");
+        } catch (error:any) {
+          // Gérer les erreurs
+          console.error(error);
+          this.utilityService.showErrorMessage(error.message || "Erreur lors de l'échange");
+        }
       },
       error => {
-        console.error('Erreur lors de la récupération des suggestions', error);
+        this.utilityService.showErrorMessage("Erreur lors de la validation de la suggestion");
       }
     );
   }
+  
+  private exchangeSuggestedObjects(suggestedObjects: any[], postAuthorId: number): Promise<boolean> {
+    const promises = suggestedObjects.map(object =>
+      this.objectService.exchangeObject(object.id, postAuthorId).toPromise()
+    );
+  
+    return Promise.all(promises)
+      .then(() => true)
+      .catch(() => false);
+  }
+  
+  private exchangePostObjects(postObjects: any[], suggestionAuthorId: number): Promise<boolean> {
+    const promises = postObjects.map(object =>
+      this.objectService.exchangeObject(object.id, suggestionAuthorId).toPromise()
+    );
+  
+    return Promise.all(promises)
+      .then(() => true)
+      .catch(() => false);
+  }
+  
 }
+

@@ -3,19 +3,21 @@ import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrollin
 import { CommonModule, NgFor,NgStyle } from '@angular/common';
 import { Router } from '@angular/router';
 import { map, pairwise, filter, throttleTime, tap } from 'rxjs/operators';
-import { IPost } from '../shared/interfaces/other.interface';
+import { IChat, IMessage, IPost,IUser } from '../shared/interfaces/other.interface';
 import { PostService } from '../shared/services/posts.service';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { EditPostComponent } from './edit-post/edit-post.component';
 import { DeletePostComponent } from './delete-post/delete-post.component';
-import { formatDistanceToNow } from 'date-fns';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { PostDetailComponent } from './details-post/detail-post.component';
 import { SuggestionsComponent } from './suggestion/suggestions.component';
-
+import { ChatService } from '../shared/services/chat.service'; 
+import { formatDistanceToNow } from 'date-fns';
+import { fr } from 'date-fns/locale';
+import { NgIf} from '@angular/common';
 @Component({
   selector: 'app-post',
   templateUrl: './posts.component.html',
@@ -30,6 +32,7 @@ import { SuggestionsComponent } from './suggestion/suggestions.component';
     NgxSpinnerModule,
     MatIconModule,
     MatButtonModule,
+    NgIf
   ],
 })
 export class PostComponent implements OnInit {
@@ -42,12 +45,14 @@ export class PostComponent implements OnInit {
   prevPage!: number;
   hasNextPage!: boolean;
   hasPrevPage!: boolean;
+  contacts: IUser[] = [];
   userObject = JSON.parse(localStorage.getItem('user')!);
   currentUserId: number = Number(this.userObject.id) ;
 
 
   posts: IPost[] = [];
-  isLoading = false;
+  isLoading = true;
+  contactExists! :boolean;
 
   @ViewChild('scroller') scroller!: CdkVirtualScrollViewport;
 
@@ -57,7 +62,8 @@ export class PostComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private chatService: ChatService,
   ) {}
 
   ngOnInit() {
@@ -65,10 +71,9 @@ export class PostComponent implements OnInit {
   }
 
   getPostsFromService() {
-    this.isLoading = true;
     this.postService.getPosts(this.page, this.limit).subscribe(
       (data: any) => {
-        console.log(data);
+        console.log( data.posts);
         this.posts = data.posts;
         this.totalDocs = data.totalDocs;
         this.totalPages = data.totalPages;
@@ -124,15 +129,6 @@ export class PostComponent implements OnInit {
       width: '600px',
       data: { post }
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.getPostsFromService();
-        this.snackBar.open('Post modifié avec succès', 'Fermer', {
-          duration: 2000,
-        });
-      }
-    });
   }
 
   deletePost(post: any): void {
@@ -162,17 +158,74 @@ export class PostComponent implements OnInit {
 
   openSuggestions(post: IPost): void {
     const dialogRef = this.dialog.open(SuggestionsComponent, {
-      width: '600px',
+      width: '700px',  // Ajustez la largeur
+      height: '100vh', // Ajustez la hauteur
       data: { post }
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('atooooooooooooo');
+        this.getPostsFromService();
+      }
       // Traitement après la fermeture du modal
     });
   }
 
+  initiateChat(post: IPost) {
+    const text = `Bonjour, je suis intéressé par votre post.`;
+    
+    const receiver: IUser = {
+      id:post.author.id,
+      name: post.author.name,
+      username: post.author.username,
+      email: post.author.email,
+    }
+
+    const sender: IUser = {
+      id:this.currentUserId,
+      name: this.userObject.name,
+      username: this.userObject.username,
+      email: this.userObject.email,
+    }
+
+    const message: IMessage = {
+      author: sender.id?.toString()!,
+      text: text,
+      timestamp: new Date(),
+    }
+    const chat: IChat = {
+      sender: sender,
+      receiver:receiver ,
+      messages: [message]
+    }
+
+     this.chatService.getContacts(this.currentUserId.toString()).subscribe((contacts) => {
+      console.log(contacts);
+      const contact = contacts.find(contact => contact.id === post.author.id);
+      console.log(contact);
+      
+      if (!contact) {
+        this.chatService.createMessage(chat).subscribe(
+          (response) => {
+            console.log(response.chat._id);
+            // Redirige vers la discussion une fois le message créé
+            this.router.navigate(['/app/chats', response.chat._id]);
+          },
+          (error) => {
+            console.error('Erreur lors de la création du message :', error);
+          }
+        );
+
+      } else {
+        this.router.navigate(['/app/chats',contact.idChat]);
+      }
+      
+    });
+    
+  }
 
   getRelativeDate(date: Date): string {
-    return formatDistanceToNow(new Date(date), { addSuffix: true });
+    return formatDistanceToNow(new Date(date), { addSuffix: true, locale: fr });
   }
 }

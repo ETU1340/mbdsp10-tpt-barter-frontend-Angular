@@ -5,9 +5,9 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import { urls } from './urls';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
+import { catchError, map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
@@ -33,23 +33,29 @@ export class AuthService {
     return promesse;
   }
 
+
   logInConnexion(name: string, mdp: string): Observable<any> {
     const body = { email: name, password: mdp };
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     console.log(urls.auth.login, body);
     return this.http
       .post<any>(urls.auth.login, body, { headers: headers })
-      .pipe(catchError(this.handleError));
+      .pipe(
+        map(response => response), // Retourne la réponse en cas de succès
+        catchError(() => of(false)) // Retourne false en cas d'erreur
+      );
   }
-
-  register(name: string,email: string,username: string, password: string): Observable<any> {
-    let roleId = 1;
-    const body = { name, username,password,email,roleId };
+  register(name: string, email: string, username: string, password: string): Observable<boolean> {
+    const roleId = 1;
+    const body = { name, username, password, email, roleId };
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     console.log(urls.auth.register, body);
     return this.http
       .post<any>(urls.auth.register, body, { headers: headers })
-      .pipe(catchError(this.handleError));
+      .pipe(
+        map(() => true), // Retourne true en cas de succès
+        catchError(() => of(false)) // Retourne false en cas d'erreur
+      );
   }
 
   private handleError(error: HttpErrorResponse) {

@@ -55,4 +55,14 @@
     overflow-y: auto;
     max-width: none;
   }
+  .text-lg {
+    font-size: 1.125rem; /* Ajustez selon vos besoins */
+  }
   
+  .font-medium {
+    font-weight: 500;
+  }
+  
+  .mt-2 {
+    margin-top: 0.5rem;
+  }

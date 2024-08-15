@@ -6,6 +6,14 @@
     >
       BARTER
     </div>
+    <p class="text-lg  mx-5 font-medium mt-5" *ngIf="userName">
+      Bienvenue, {{ userName }}!
+    </p>
+
+    <p class="text-lg mx-5 font-medium mt-5" *ngIf="mail">
+      {{ mail }}!
+    </p>
+  
     <div class="bg-100 mx-5 mt-10 px-6 py-4 rounded-xl drawer">
       <a
         class="drawer-link"

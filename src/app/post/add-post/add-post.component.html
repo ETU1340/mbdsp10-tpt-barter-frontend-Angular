@@ -1,22 +1,31 @@
+<!-- add-post.component.html -->
 
-<div class="spinner-host"   *ngIf="isLoading">
-  <div class="spinner"   ></div>
+<div class="spinner-host" *ngIf="isLoading">
+  <div class="spinner"></div>
 </div>
+
 <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
-  <cdk-virtual-scroll-viewport itemSize="200" class="object-list">
-    <mat-grid-list cols="5" rowHeight="200px">
-      <mat-grid-tile *cdkVirtualFor="let object of objects">
-        <mat-card class="object-card">
-          <div class="checkbox-container">
-            <mat-checkbox (change)="onObjectSelect(object.id, $event.checked)"></mat-checkbox>
-          </div>
+  <mat-grid-list cols="5" rowHeight="220px">
+    <!-- Message si aucun objet -->
+    <ng-container *ngIf="!isLoading && objects.length === 0">
+      <mat-grid-tile colspan="5" class="flex justify-center items-center h-full">
+        <p class="text-lg font-medium text-gray-500">Aucun objet disponible</p>
+      </mat-grid-tile>
+    </ng-container>
+
+    <mat-grid-tile *ngFor="let object of objects">
+      <mat-card class="object-card">
+        <div class="card-content">
           <mat-card-header>
             <mat-card-title>{{ object.name }}</mat-card-title>
           </mat-card-header>
-          <img mat-card-image src="../../assets/basket.jpg" alt="{{ object.name }}">
-        </mat-card>
-      </mat-grid-tile>
-    </mat-grid-list>
-  </cdk-virtual-scroll-viewport>
-  <button mat-raised-button style = "bottom: 200px;" type="submit">Créer le post</button>
+          <img mat-card-image [src]="object.photos[0]" alt="{{ object.name }}">
+        </div>
+        <div class="checkbox-container">
+          <mat-checkbox (change)="onObjectSelect(object.id, $event.checked)"></mat-checkbox>
+        </div>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <button mat-raised-button style="position: fixed; bottom: 20px; right: 20px;" type="submit">Créer le post</button>
 </form>

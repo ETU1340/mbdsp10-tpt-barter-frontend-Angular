@@ -54,3 +54,42 @@
   background-color: #ddd;
   margin-top: 20px;
 }
+.no-suggestions-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 600px; /* S'assure que la div prend toute la hauteur du conteneur */
+  width: 100%;  /* S'assure que la div prend toute la largeur du conteneur */
+  text-align: center;
+  font-size: 18px;
+  position: absolute; /* Assure que la div occupe toute la hauteur de son parent */
+  top: 0;
+  left: 0;
+  background-color: #f9f9f9; /* Optionnel : ajout d'une couleur de fond pour plus de visibilité */
+  z-index: 1; /* Assure que la div est au-dessus des autres éléments */
+}
+
+
+.spinner-host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height to center vertically */
+}
+
+
+.spinner {
+  border: 8px solid #f3f3f3; /* Light grey */
+  border-top: 8px solid #49A856; /* Blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+  margin: auto;
+
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

@@ -25,15 +25,15 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   // champs du formulaire
-  username = '';
+  mail = '';
   password = '';
   errorMessage = '';
 
   constructor(private authService: AuthService, private router: Router) {}
   onSubmit(event: any) {
-    if (this.username == '' || this.password === undefined) return;
+    if (this.mail == '' || this.password === undefined) return;
     this.authService
-      .logInConnexion(this.username, this.password)
+      .logInConnexion(this.mail, this.password)
       .subscribe((reponse) => {
         if (reponse !== false) {
           console.log(reponse);

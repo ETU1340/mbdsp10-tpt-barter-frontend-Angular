@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '../shared/services/chat.service';
 import {MapComponent} from '../map/map.component'
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-message',
@@ -19,10 +20,17 @@ export class ChatComponent implements OnInit {
   userObject = JSON.parse(localStorage.getItem('user')!);
   userId: string = this.userObject.id || '';
 
-  constructor(private messagingService: ChatService) {}
+  constructor(private messagingService: ChatService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.loadContacts(this.userId);
+
+    this.route.paramMap.subscribe((params) => {
+      const chatId = params.get('id');
+      if (chatId) {
+        this.loadChat(chatId);
+      }
+    });
   }
 
   loadContacts(userId: string) {
@@ -50,7 +58,7 @@ export class ChatComponent implements OnInit {
       };
 
       this.messagingService
-        .sendMessage(this.selectedChat._id, message)
+        .sendMessage(this.selectedChat._id!, message)
         .subscribe((updatedChat) => {
           this.selectedChat = updatedChat.chat;
           this.newMessage = '';

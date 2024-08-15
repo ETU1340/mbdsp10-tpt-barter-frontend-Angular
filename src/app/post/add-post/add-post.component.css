@@ -1,13 +1,25 @@
+/* add-post.component.css */
+
 .object-list {
   height: 600px; /* Ajustez selon votre besoin */
 }
 
 .object-card {
   width: 180px; /* Largeur fixe pour chaque carte */
-  height: 180px; /* Hauteur fixe pour chaque carte */
+  height: 220px; /* Hauteur fixe pour chaque carte */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
+  margin: 10px 0;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding-bottom: 30px; /* Espace pour la checkbox */
 }
 
 .object-card img {
@@ -17,17 +29,17 @@
 
 .checkbox-container {
   position: absolute;
-  top: 8px; /* Ajustez selon l'espacement souhaité */
-  right: 8px; /* Ajustez selon l'espacement souhaité */
-  z-index: 1; /* Assure que le checkbox est au-dessus des autres éléments */
+  top: 0px; /* Espacement pour placer la checkbox en bas */
+  right: 0px; /* Ajustez selon l'espacement souhaité */
+  z-index: 1; /* Assure que la checkbox est au-dessus des autres éléments */
 }
+
 .spinner-host {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh; /* Full viewport height to center vertically */
 }
-
 
 .spinner {
   border: 8px solid #f3f3f3; /* Light grey */
@@ -37,7 +49,6 @@
   height: 60px;
   animation: spin 2s linear infinite;
   margin: auto;
-
 }
 
 @keyframes spin {

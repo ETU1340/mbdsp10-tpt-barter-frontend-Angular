@@ -17,11 +17,12 @@ export class ObjectService {
 
 
 
-getObjectPagines(page: number, limit: number): Observable<any> {
+getObjectPagines(page: number, limit: number,ownerId: number): Observable<any> {
 
   const params = new HttpParams()
   .set('page', page.toString())
-  .set('limit', limit.toString());
+  .set('limit', limit.toString())
+  .set('ownerId',ownerId.toString());
 
   return this.http.get<IObject>(urls.objects.get+'/pagin', { params }).pipe(
     catchError(
@@ -61,17 +62,29 @@ getObjectPagines(page: number, limit: number): Observable<any> {
 
   // ajoute un assignment et retourne une confirmation
   addObject( name: string, description: string, categoryId: number, ownerId: number,photos:File[]): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const body = { name,description,categoryId,ownerId,photos};
-    return this.http.post<IObject>(urls.objects.post,body,{ headers: headers });
+
+    
+      const formData = new FormData();
+
+      // Ajouter les champs texte à FormData
+      formData.append('name', name);
+      formData.append('description', description);
+      formData.append('categoryId', categoryId.toString());
+      formData.append('ownerId', ownerId.toString());
+
+      // Ajouter chaque fichier au FormData
+      photos.forEach((photo, index) => {
+        formData.append('files', photo, photo.name);
+      });
+
+   return this.http.post<IObject>(urls.objects.post,formData);
   }
 
-  updateObject(id:string,name: string , description: string ,categoryId:number,ownerId:number,photos:string[]): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const body = { name,description,categoryId,ownerId,photos};
+  updateObject(id:string,name: string , description: string ,categoryId:number,ownerId:number): Observable<any> {
+    const body = { name,description,categoryId,ownerId};
     console.log(body);
 
-   return this.http.put<IObject>(urls.objects.put+'/'+id, body, { headers: headers });
+   return this.http.put<IObject>(urls.objects.put+'/owner/'+id, body);
   }
 
   exchangeObject(idObject: number,ownerId:number): Observable<any> {

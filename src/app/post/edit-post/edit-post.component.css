@@ -1,6 +1,6 @@
 .modal-container {
-  width: 50vw;
-  height: 70vh;
+  width: 700px; /* Ajustez la largeur */
+  height: 80vh; /* Ajustez la hauteur */
   display: flex;
   flex-direction: column;
   position: relative;
@@ -30,8 +30,8 @@
 .object-list-container {
   flex-grow: 1;
   margin-top: 20px;
-  height: 70vh;
-  width: 100%;
+  height: calc(80vh - 80px); /* Ajustez la hauteur pour tenir compte des marges */
+  width: 700px;
   overflow-y: auto;
   border: 1px solid #ccc;
   padding: 10px;
@@ -43,12 +43,26 @@ mat-form-field {
 
 .object-card {
   position: relative;
+  height: 200px;
+  width: 100%; /* S'assure que la carte occupe toute la largeur disponible */
+  max-width: 300px; /* Largeur maximale pour les cartes */
+  margin: 20px; /* Espacement entre les cartes */
+  border-radius: 8px; /* Coins arrondis pour un aspect plus moderne */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre légère pour l'effet de profondeur */
+  overflow: hidden; /* Cache le débordement pour une apparence propre */
+  background-color: #fff; /* Fond blanc pour les cartes */
 }
+
+.object-card img {
+  width: 100%; /* Prend toute la largeur disponible */
+  height: auto; /* Garde les proportions des images */
+}
+
 
 .object-checkbox {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 0px;
+  right: 0px;
 }
 
 .actions {

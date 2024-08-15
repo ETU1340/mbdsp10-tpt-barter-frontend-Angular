@@ -66,18 +66,7 @@ export class EditObjectComponent implements OnInit {
       this.categoryId  = selectedCategory.id;
     }
   }
-  handlePhotoUpload(event: any) {
-    const files = event.target.files;
-    if (files) {
-      for (let i = 0; i < files.length; i++) {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.photos.push(e.target.result.split(',')[1]); // On sauvegarde uniquement la partie base64
-        };
-        reader.readAsDataURL(files[i]);
-      }
-    }
-  }
+
   loadCategories() {
     // Supposons que le service possède une méthode pour obtenir les catégories
     this.objectService.getCategories().subscribe((categories) => {
@@ -96,7 +85,7 @@ export class EditObjectComponent implements OnInit {
     if (this.name === '' || this.description === '' || this.categoryId === undefined) return;
     // Assurez-vous de mettre à jour les autres champs nécessaires
 
-    this.objectService.updateObject(this.object.id,this.name,this.description,this.categoryId,parseInt(this.object.owner.id),this.photos).subscribe((message) => {
+    this.objectService.updateObject(this.object.id,this.name,this.description,this.categoryId,parseInt(this.object.owner.id)).subscribe((message) => {
       console.log(message);
       this.router.navigate(['/app/object/details/' + this.object!.id]);
     });

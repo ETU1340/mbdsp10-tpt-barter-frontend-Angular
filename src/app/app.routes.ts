@@ -55,6 +55,11 @@ export const routes: Routes = [
       { path: 'chats', 
         component: ChatComponent,
       },
+      {
+        path: 'chats/:id',
+        component: ChatComponent 
+      }
+   
     ],
   },
 ];

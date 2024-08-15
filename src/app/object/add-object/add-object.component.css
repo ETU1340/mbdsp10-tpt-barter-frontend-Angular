@@ -6,3 +6,15 @@
 .buttonNext {
   color: green;
 }
+.upload-btn {
+  background-color: #49A856;
+  color: white; /* Couleur du texte */
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.upload-btn:hover {
+  background-color: #3d8b49; /* Couleur lors du survol */
+}

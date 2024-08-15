@@ -1,5 +1,4 @@
 <div class="w-11/12 mx-auto bg-white px-12 py-10">
-  <h1 class="text-center">Ajout d'un nouvel objet</h1>
   <form
     (ngSubmit)="handleAddObject()"
     #formAddObject="ngForm"
@@ -35,13 +34,20 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field class="w-full mt-5">
+    <!-- Champ de téléchargement de fichier sans matInput -->
+    <div class="w-full mt-5">
+      <label for="photo-upload" class="btn btn-primary upload-btn">
+        Ajouter des photos
+      </label>
       <input
         type="file"
+        id="photo-upload"
         (change)="handleFileInput($event)"
         multiple
+        style="display: none"
       />
-    </mat-form-field>
+    </div>
+    
 
     <div class="flex gap-4 mt-5">
       <button
@@ -52,12 +58,4 @@
       </button>
     </div>
   </form>
-</div>
-
-<!-- Prévisualisation des images -->
-<div *ngIf="photos.length > 0" class="mt-5">
-  <h2>Prévisualisation des photos :</h2>
-  <div class="flex flex-wrap gap-2">
-    <img *ngFor="let photo of photos" [src]="photo" class="w-24 h-24 object-cover" alt="Photo prévisualisée" />
-  </div>
 </div>

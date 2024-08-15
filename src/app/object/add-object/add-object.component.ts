@@ -7,7 +7,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { ObjectService } from '../../shared/services/object.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IObject } from '../../shared/interfaces/other.interface';
+import { UtilityService} from '../../shared/services/utility.service';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -38,7 +38,7 @@ export class AddObjectComponent implements OnInit {
   
   constructor(
     private objectService: ObjectService,
-    private router: Router
+    private utilityService: UtilityService
   ) {}
 
   ngOnInit() {
@@ -57,6 +57,7 @@ export class AddObjectComponent implements OnInit {
 
   loadCategories() {
     this.objectService.getCategories().subscribe((categories) => {
+      console.log(categories);
       this.categories = categories;
     });
   }
@@ -73,7 +74,10 @@ export class AddObjectComponent implements OnInit {
     const   userObject = JSON.parse(localStorage.getItem('user')!);
     this.ownerId =   Number(userObject.id);
     this.objectService.addObject( this.name,this.description,this.categoryId,this.ownerId,this.photos).subscribe((response:any) => {
-      this.router.navigate(['/app/objects']);
+      this.utilityService.showSuccessMessage('Objet créé avec succès');
+    },
+    (error) => {
+      this.utilityService.showErrorMessage('Erreur lors de la création de l\'objet');
     });
   }
 }

@@ -14,8 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { ObjectComponent } from '../../object/object.component';
-import { ObjectService } from '../../shared/services/object.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-app-layout',
@@ -30,6 +30,7 @@ import { AuthService } from '../../shared/services/auth.service';
     ObjectComponent,
     MatSidenavModule,
     NgIconComponent,
+    NgIf
   ],
   templateUrl: './app-layout.component.html',
   styleUrl: './app-layout.component.css',
@@ -46,11 +47,15 @@ import { AuthService } from '../../shared/services/auth.service';
 export class AppLayoutComponent {
   title = 'Application de gestion des assignments';
   showFiller = true;
+  userObject = JSON.parse(localStorage.getItem('user')!);
+  userName: string;
+  mail: string;
   constructor(
     private authService: AuthService,
-    private assignmentsService: ObjectService,
-    private router: Router
-  ) {}
+  ) { 
+    this.userName = this.userObject.username;
+    this.mail = this.userObject.email;
+  }
   ngOnInit(): void {}
   login() {
     // on utilise le service d'autentification

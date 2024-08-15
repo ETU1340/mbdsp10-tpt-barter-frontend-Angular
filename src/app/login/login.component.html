@@ -12,10 +12,10 @@
     <mat-form-field>
       <input
         matInput
-        placeholder="Nom"
+        placeholder="Email"
         required
-        [(ngModel)]="username"
-        name="nom"
+        [(ngModel)]="mail"
+        name="email"
       />
     </mat-form-field>
 
@@ -38,7 +38,7 @@
     <button
       mat-stroked-button
       color="primary"
-      [disabled]="username == '' || password == ''"
+      [disabled]="mail == '' || password == ''"
       style="padding: 10px"
     >
       Connexion

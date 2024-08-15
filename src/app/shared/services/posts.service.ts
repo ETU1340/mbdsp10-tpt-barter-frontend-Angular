@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IPost } from '../interfaces/other.interface';
+import { IObject, IPost,ISuggestion } from '../interfaces/other.interface';
 import { urls } from './urls';
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class PostService {
   constructor(private http: HttpClient) {}
 
   getPosts(page: number, limit: number): Observable<IPost[]> {
-    
+    console.log("atoooooooooooooooooooooooooooo");
   const params = new HttpParams()
   .set('page', page.toString())
   .set('limit', limit.toString());
@@ -29,9 +29,10 @@ export class PostService {
     return this.http.put<any>(urls.posts.put+'/'+postId, body);
   }
 
-  addSuggestToPost( postId: number ,objects: number[], suggestedById: number): Observable<any> {
-    const body = {objects,suggestedById};
-    return this.http.post<any>(urls.suggestion.post +'/'+postId, body);
+  addSuggestToPost(postId:number,suggestedById:number,suggestedObjectIds:Number[]): Observable<any> {
+    const body = {postId,suggestedById,suggestedObjectIds};
+    console.log(body);
+    return this.http.post<any>(urls.suggestion.post +'/send', body);
   }
 
   validationSuggest(suggestionId: number): Observable<any> {

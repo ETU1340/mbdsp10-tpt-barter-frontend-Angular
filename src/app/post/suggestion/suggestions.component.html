@@ -1,32 +1,42 @@
 <!-- suggestions-modal.component.html -->
-<h1>Suggestions pour le Post</h1>
+<h1>Liste des suggestions pour le post</h1>
 
-<div style="height: 600px; overflow-y: auto;">
-  <div *ngFor="let suggestion of suggestions" class="suggestion-item">
-    <div class="suggestion-header">
-      <div class="author-info">
-        <img src="../../assets/avatar.jpg" alt="{{ suggestion.suggestedBy.name }}" class="author-photo">
-        <h3>{{ suggestion.suggestedBy.name }}</h3>
-      </div>
-      <button mat-raised-button color="primary" (click)="validateSuggestion(suggestion)">Valider</button>
-    </div>
-
-    <div class="suggested-objects">
-      <ul>
-        <li *ngFor="let obj of suggestion.suggestedObject" class="object-item">
-          <img [src]="obj.photos?.length > 0 ? obj.photos[0] : '../../assets/basket.jpg'" alt="{{ obj.object.name }}" class="object-photo">
-
-          <div class="object-info">
-            <p><strong>{{ obj.object.name }}</strong></p>
-            <p>{{ obj.object.description }}</p>
-          </div>
-        </li>
-      </ul>
-    </div>
-
-    <hr class="suggestion-separator">
+<div class="modal-container">
+  <div *ngIf="isLoading" class="spinner-host">
+    <div class="spinner"></div>
   </div>
-</div>
+  
+  <div *ngIf="!isLoading">
+    <div *ngIf="suggestions.length === 0" class="no-suggestions-message">
+      Aucune suggestion disponible.
+    </div>
+    <div *ngIf="suggestions.length > 0" style="height: 600px; overflow-y: auto;">
+      <div *ngFor="let suggestion of suggestions" class="suggestion-item">
+        <div class="suggestion-header">
+          <div class="author-info">
+            <img src="../../assets/avatar.jpg" alt="{{ suggestion.suggestedBy.name }}" class="author-photo">
+            <h3>{{ suggestion.suggestedBy.name }}</h3>
+          </div>
+          <button mat-raised-button color="primary" (click)="validateSuggestion(suggestion)">Valider</button>
+        </div>
+  
+        <div class="suggested-objects">
+          <ul>
+            <li *ngFor="let obj of suggestion.suggestedObject" class="object-item">
+              <img [src]="obj.photos?.length > 0 ? obj.photos[0] : '../../assets/basket.jpg'" alt="{{ obj.object.name }}" class="object-photo">
+  
+              <div class="object-info">
+                <p><strong>{{ obj.object.name }}</strong></p>
+                <p>{{ obj.object.description }}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+  
+        <hr class="suggestion-separator">
+      </div>
+    </div>
+  </div>
 
-<!-- Ajouter un bouton pour fermer le modal -->
-<button mat-raised-button color="primary" (click)="onNoClick()">Fermer</button>
+  <button mat-raised-button color="primary" (click)="onNoClick()">Fermer</button>
+</div>

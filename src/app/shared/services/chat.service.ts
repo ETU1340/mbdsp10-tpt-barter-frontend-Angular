@@ -42,7 +42,14 @@ export class ChatService {
 
   // Envoie un message entre deux utilisateurs
   sendMessage(idChat:string, message: IMessage): Observable<any> {
-    const body = { author:message.author,text:message.text,timestamp:message.timestamp };
+    const body = { author:String(message.author),text:message.text,timestamp:message.timestamp };
+    console.log(body);
     return this.http.patch<any>(`${urls.chats.continueMessage}/${idChat}`, body);
+  }
+
+  // Envoie un message entre deux utilisateurs
+  createMessage(chat:IChat): Observable<any> {
+    const body = { sender:chat.sender,receiver:chat.receiver,messages:chat.messages};
+    return this.http.post<any>(`${urls.chats.post}`, body);
   }
 }

@@ -34,11 +34,11 @@ export class RegisterComponent {
       .register(this.name,this.mail,this.username, this.password)
       .subscribe((reponse) => {
         console.log(reponse);
-        if (reponse !== false && reponse.error !== true) {
+        if (reponse) {
           this.errorMessage = '';
           this.router.navigate(['/login']);
         } else {
-          this.errorMessage = 'Information incorrecte';
+          this.errorMessage = 'email non correcte';
           return;
         }
       });

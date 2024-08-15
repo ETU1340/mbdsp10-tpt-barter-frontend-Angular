@@ -1,5 +1,5 @@
 export interface IUser {
-  id: number;
+  id?: number;
   name: string;
   username: string;
   email: string;
@@ -70,7 +70,7 @@ export interface IMessage {
 }
 
 export interface IChat {
-  _id:string;
+  _id?:string;
   sender: IUser;
   receiver: IUser;
   messages: IMessage[];

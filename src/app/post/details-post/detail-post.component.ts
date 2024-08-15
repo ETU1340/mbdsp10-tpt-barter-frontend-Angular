@@ -12,22 +12,23 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [CommonModule, MatDialogModule, MatButtonModule]
 })
 export class PostDetailComponent {
-  currentPhotoIndex: number = 0;
+  // Tableau pour stocker l'index de la photo courante pour chaque objet
+  photoIndices: number[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<PostDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { post: IPost }
-  ) {}
+  ) {
+    // Initialisation du tableau d'index des photos
+    this.photoIndices = data.post.objects.map(() => 0);
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  showPhoto(index: number) {
-    this.currentPhotoIndex = index;
-  }
-
-  getActivePhoto(objectPost: any) {
-    return objectPost.object.photos[this.currentPhotoIndex];
+  showPhoto(objectIndex: number, photoIndex: number) {
+    // Mise à jour de l'index de la photo pour l'objet spécifique
+    this.photoIndices[objectIndex] = photoIndex;
   }
 }

@@ -57,6 +57,8 @@ export class ObjectComponent implements OnInit {
   hasPrevPage!: boolean;
   // tableau des assignments POUR AFFICHAGE
   displayedColumns: string[] = ['nom', 'dateDeRendu'];
+  userObject = JSON.parse(localStorage.getItem('user')!);
+  currentUserId: number = Number(this.userObject.id) ;
 
   objects: IObject[] = [];
 
@@ -103,7 +105,7 @@ export class ObjectComponent implements OnInit {
 
   getAssignmentsFromService(): void {
     this.isLoading = true;
-    this.assignmentsService.getObjectPagines(this.page, this.limit).subscribe(
+    this.assignmentsService.getObjectPagines(this.page, this.limit,this.currentUserId).subscribe(
       
       (data) => {
         console.log(data);
@@ -126,7 +128,7 @@ export class ObjectComponent implements OnInit {
   getAssignmentsFromServicePourScrollInfini() {
     // on récupère les assignments depuis le service
     this.assignmentsService
-      .getObjectPagines(this.page, this.limit)
+      .getObjectPagines(this.page, this.limit,this.currentUserId)
       .subscribe((data) => {
         // les données arrivent ici au bout d'un certain temps
         console.log('Données arrivées');
