@@ -7,27 +7,29 @@
       </div>
       <div class="post-actions">
         <ng-container *ngIf="post.author.id !== currentUserId">
-        <!-- Afficher le bouton "add" pour tous les utilisateurs -->
-        <button mat-icon-button (click)="editPost(post); $event.stopPropagation()">
-          <mat-icon>add</mat-icon>
-        </button>
-        <button mat-icon-button (click)="editPost(post); $event.stopPropagation()">
-          <mat-icon>chat</mat-icon>
-        </button>
-        
-        
-      </ng-container>
+          <!-- Afficher le bouton "add" pour tous les utilisateurs -->
+          <button mat-icon-button (click)="editPost(post); $event.stopPropagation()"   matTooltip="Ajouter">
+            <mat-icon class="icon-add">add</mat-icon>
+          </button>
+          <button mat-icon-button (click)="editPost(post); $event.stopPropagation()"  matTooltip="Contacter">
+            <mat-icon class="icon-chat">chat</mat-icon>
+          </button>
+          <button mat-icon-button (click)="showMap(post); $event.stopPropagation()"   matTooltip="Afficher sur la carte">
+            <mat-icon class="icon-map">map</mat-icon>
+          </button>
+        </ng-container>
         <!-- Afficher les boutons "delete" et "list" uniquement si l'utilisateur connecté est l'auteur -->
         <ng-container *ngIf="post.author.id === currentUserId">
-          <button mat-icon-button (click)="openSuggestions(post); $event.stopPropagation()">
-            <mat-icon>list</mat-icon>
+          <button mat-icon-button (click)="openSuggestions(post); $event.stopPropagation()"  matTooltip="Voir les suggestions">
+            <mat-icon class="icon-list">list</mat-icon>
           </button>
-          <button mat-icon-button (click)="deletePost(post); $event.stopPropagation()">
-            <mat-icon>delete</mat-icon>
+          <button mat-icon-button (click)="deletePost(post); $event.stopPropagation()" matTooltip="Supprimer">
+            <mat-icon class="icon-delete">delete</mat-icon>
           </button>
         </ng-container>
       </div>
     </div>
+
     <div class="post-content">
       <div class="object-container">
         <ul>
@@ -35,17 +37,14 @@
         </ul>
       </div>
     </div>
+
     <div class="post-footer">
       <p class="post-date">{{ getRelativeDate(post.createdAt) }}</p>
     </div>
+    
   </div>
   
   <div class="spinner-host" *ngIf="isLoading">
     <div class="spinner"></div>
   </div>
 </div>
-<cdk-virtual-scroll-viewport itemSize="50" class="scroller" #scroller>
-  <div *ngFor="let post of posts" class="post-item">
-    <!-- Contenu du post -->
-  </div>
-</cdk-virtual-scroll-viewport>

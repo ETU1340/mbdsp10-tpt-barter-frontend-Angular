@@ -89,3 +89,14 @@ margin-bottom: 5px; /* Optionnel : ajoute un peu d'espace entre chaque élément
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+.icon-chat {
+  color: #49A856; /* Orange */
+}
+
+.icon-map {
+  color: #1E90FF; /* Bleu */
+}
+
+.icon-delete {
+  color: #FF0000; /* Rouge */
+}

@@ -53,7 +53,7 @@ export class AppLayoutComponent {
   constructor(
     private authService: AuthService,
   ) { 
-    this.userName = this.userObject.username;
+    this.userName = this.userObject.name;
     this.mail = this.userObject.email;
   }
   ngOnInit(): void {}

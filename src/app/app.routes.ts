@@ -58,6 +58,10 @@ export const routes: Routes = [
       {
         path: 'chats/:id',
         component: ChatComponent 
+      },
+      {
+        path:'dash',
+        component: DashboardComponent
       }
    
     ],

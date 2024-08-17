@@ -18,6 +18,8 @@ import { ChatService } from '../shared/services/chat.service';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { NgIf} from '@angular/common';
+import {MapModalComponent} from '../map/mapModal.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'app-post',
   templateUrl: './posts.component.html',
@@ -32,7 +34,9 @@ import { NgIf} from '@angular/common';
     NgxSpinnerModule,
     MatIconModule,
     MatButtonModule,
-    NgIf
+    NgIf,
+    MapModalComponent,
+    MatTooltipModule
   ],
 })
 export class PostComponent implements OnInit {
@@ -48,6 +52,8 @@ export class PostComponent implements OnInit {
   contacts: IUser[] = [];
   userObject = JSON.parse(localStorage.getItem('user')!);
   currentUserId: number = Number(this.userObject.id) ;
+  showMapFlag = false;
+
 
 
   posts: IPost[] = [];
@@ -121,6 +127,16 @@ export class PostComponent implements OnInit {
         this.page = this.nextPage;
         this.getPostsFromServiceForInfiniteScroll();
       });
+    });
+  }
+
+
+  showMap(post: any): void {
+    const postCoordinates: [number, number] = [-74.0060, 40.7128]; // Coordonnées du post (longitude, latitude)
+
+    this.dialog.open(MapModalComponent, {
+      width: '800px',
+      data: {postLocation: postCoordinates }
     });
   }
 

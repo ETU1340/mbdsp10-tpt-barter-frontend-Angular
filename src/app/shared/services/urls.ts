@@ -41,5 +41,8 @@ export const urls = {
     continueMessage: baseurl + 'chats/continue',
     delete: baseurl + 'chats',
     patchs: baseurl + 'chats',
+  },
+  dash: {
+    user: baseurl + 'user'
   }
 };

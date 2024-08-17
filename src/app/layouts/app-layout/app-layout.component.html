@@ -1,12 +1,12 @@
 <mat-drawer-container class="w-full min-h-screen h-fit main-container">
-  <mat-drawer #drawer class="h-full py-5 " opened mode="side">
+  <mat-drawer #drawer class="h-full py-5" opened mode="side">
     <div
       class="h-16 w-60 flex items-center justify-center text-xl font-extrabold text-500"
       style="color:#49A856"
     >
       BARTER
     </div>
-    <p class="text-lg  mx-5 font-medium mt-5" *ngIf="userName">
+    <p class="text-lg mx-5 font-medium mt-5" *ngIf="userName">
       Bienvenue, {{ userName }}!
     </p>
 
@@ -15,58 +15,43 @@
     </p>
   
     <div class="bg-100 mx-5 mt-10 px-6 py-4 rounded-xl drawer">
-      <a
-        class="drawer-link"
-        routerLink="/app/posts"
-      >
-        <ng-icon name="heroHome" size="27"></ng-icon> Fil d'actualité
+      <a class="drawer-link" routerLink="/app/posts">
+        <mat-icon>rss_feed</mat-icon> Fil d'actualité
       </a>
-      <a
-        class="drawer-link"
-        routerLink="/app/post/add"
-      >
-        <ng-icon name="bootstrapPlusLg" size="27"></ng-icon> Publier un poste
+      <a class="drawer-link" routerLink="/app/post/add">
+        <mat-icon>post_add</mat-icon> Publier un poste
       </a>
     </div>
     <div class="bg-100 mx-5 mt-5 px-6 py-4 rounded-xl drawer">
-      <a
-        class="drawer-link"
-        routerLink="/app/objects"
-      >
-        <ng-icon name="bootstrapList" size="27"></ng-icon> Mes objets
+      <a class="drawer-link" routerLink="/app/objects">
+        <mat-icon>list</mat-icon> Mes objets
       </a>
-      <a
-        class="drawer-link"
-        routerLink="/app/object/add"
-      >
-        <ng-icon name="bootstrapPlusLg" size="27"></ng-icon> Nouvelle objet
+      <a class="drawer-link" routerLink="/app/object/add">
+        <mat-icon>create</mat-icon> Nouvelle objet
       </a>
     </div>
     
     <div class="bg-100 mx-5 mt-5 px-6 py-4 rounded-xl drawer">
-      <a
-        class="drawer-link"
-        routerLink="/app/chats"
-      >
-        <ng-icon name="bootstrapList" size="27"></ng-icon> Fil de discussion
+      <a class="drawer-link" routerLink="/app/chats">
+        <mat-icon>chat</mat-icon> Fil de discussion
       </a>
-    
+
+      <a class="drawer-link" routerLink="/app/dash">
+        <mat-icon>chat</mat-icon> Statistique
+      </a>
     </div>
   </mat-drawer>
 
   <div class="h-screen px-5 py-5 flex flex-col">
-    <div
-      class="main-header"
-    >
+    <div class="main-header">
       <button
         (click)="drawer.toggle()"
         class="hover:text-blue-500 transition-all duration-150"
       >
-        <ng-icon name="bootstrapLayoutSidebarInset" size="27"></ng-icon>
+        <mat-icon>menu</mat-icon>
       </button>
       <button (click)="login()" class="logout-button">Logout</button>
     </div>
-      <router-outlet class="h-full w-full"></router-outlet>
-    
+    <router-outlet class="h-full w-full"></router-outlet>
   </div>
 </mat-drawer-container>
