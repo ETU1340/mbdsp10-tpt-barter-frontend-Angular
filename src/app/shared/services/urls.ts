@@ -13,7 +13,7 @@ export const urls = {
     post:baseurl + 'suggestions'
   },
   stat: {
-    get: baseurl + 'stat',
+    stat: baseurl + 'dashboard/count-insights',
   },
   searchReturned: {
     get: baseurl + 'searchReturned',
@@ -37,12 +37,18 @@ export const urls = {
   chats: {
     post: baseurl + 'chats',
     get: baseurl + 'chats',
-    getByUser: baseurl + 'chats/user',
+    getByUser: baseurl + 'chats/userId',
     continueMessage: baseurl + 'chats/continue',
     delete: baseurl + 'chats',
     patchs: baseurl + 'chats',
   },
   dash: {
     user: baseurl + 'user'
+  }
+  ,
+  notification: {
+    get: baseurl + 'notifications',
+    put: baseurl + 'notifications',
+    post: baseurl + 'notifications',
   }
 };

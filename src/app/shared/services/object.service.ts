@@ -112,7 +112,7 @@ getObjectPagines(page: number, limit: number,ownerId: number): Observable<any> {
   }
 
   getStat() {
-    return this.http.get(urls.stat.get);
+    return this.http.get(urls.stat.stat);
   }
 
   searchReturned(name: string): Observable<IObject[]> {

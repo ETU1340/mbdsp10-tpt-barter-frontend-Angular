@@ -10,9 +10,6 @@
     </div>
     <div class="chat-container">
       <div class="chat-header">
-        <img src="../../assets/avatar.jpg" alt="Avatar" class="chat-avatar" />
-       
-        <p>User ID: {{ userId }}</p>
       </div>
       <div  *ngIf="selectedChat" class="chat-messages">
         <div *ngFor="let message of selectedChat?.messages" 

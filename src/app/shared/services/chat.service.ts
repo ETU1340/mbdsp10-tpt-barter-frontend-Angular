@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IChat, IMessage, IUser } from '../../shared/interfaces/other.interface';
 import { urls } from './urls';
-import { map } from 'rxjs/operators';
+import {NotificationService} from './notification.service';
+import { map, switchMap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private notificationService: NotificationService) {}
   // Récupère la liste des contacts d'un utilisateur
   getContacts(userId: string): Observable<IUser[]> {
     return this.http.get<IChat[]>(`${urls.chats.getByUser}/${userId}`).pipe(
@@ -22,10 +23,18 @@ export class ChatService {
       if (lastMessage.length > 17) {
         lastMessage = lastMessage.substring(0, 16) + '...';
       }
-      const user : IUser = {  id: chat.receiver.id,
-        name: chat.receiver.name,
-        username: chat.receiver.username,
-        email: chat.receiver.email,
+
+      let userReceiver : IUser =  chat.receiver;
+
+      if( chat.receiver.id == Number(userId)) {
+         
+        userReceiver = chat.sender;
+
+      }
+      const user : IUser = {  id: userReceiver.id,
+        name: userReceiver.name,
+        username: userReceiver.username,
+        email: userReceiver.email,
         idChat : chat._id,
         lastMessage: lastMessage};
         return user;
@@ -41,15 +50,40 @@ export class ChatService {
   }
 
   // Envoie un message entre deux utilisateurs
-  sendMessage(idChat:string, message: IMessage): Observable<any> {
-    const body = { author:String(message.author),text:message.text,timestamp:message.timestamp };
-    console.log(body);
-    return this.http.patch<any>(`${urls.chats.continueMessage}/${idChat}`, body);
+  sendMessage(idChat:string, message: IMessage, idReceiver: number|undefined,nameSender:string): Observable<any> {
+    return this.notificationService.createNotification(idReceiver,"Nouveau message",`${nameSender} vous a envoyer un nouveau message `).pipe(
+      // Utiliser un opérateur 'switchMap' pour enchaîner les observables
+      switchMap((response) => {
+      const body = { author:String(message.author),text:message.text,timestamp:message.timestamp };
+      console.log(body);
+      return this.http.patch<any>(`${urls.chats.continueMessage}/${idChat}`, body);
+    })
+  );
+  
   }
 
   // Envoie un message entre deux utilisateurs
-  createMessage(chat:IChat): Observable<any> {
-    const body = { sender:chat.sender,receiver:chat.receiver,messages:chat.messages};
-    return this.http.post<any>(`${urls.chats.post}`, body);
+  createMessage(chat: IChat): Observable<any> {
+    // Créer une notification puis envoyer le message
+    console.log(chat.receiver);
+    return this.notificationService
+      .createNotification(
+        chat.receiver.id,
+        "Nouveau message",
+        `${chat.sender.username} vous a envoyé un nouveau message`
+      )
+      .pipe(
+        // Utiliser un opérateur 'switchMap' pour enchaîner les observables
+        switchMap((response) => {
+          const body = {
+            sender: chat.sender,
+            receiver: chat.receiver,
+            messages: chat.messages,
+          };
+          // Retourner l'observable du post HTTP
+          return this.http.post<any>(`${urls.chats.post}`, body);
+        })
+      );
   }
+  
 }

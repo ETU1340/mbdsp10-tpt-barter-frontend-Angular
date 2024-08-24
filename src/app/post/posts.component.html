@@ -8,10 +8,10 @@
       <div class="post-actions">
         <ng-container *ngIf="post.author.id !== currentUserId">
           <!-- Afficher le bouton "add" pour tous les utilisateurs -->
-          <button mat-icon-button (click)="editPost(post); $event.stopPropagation()"   matTooltip="Ajouter">
+          <button mat-icon-button (click)="editPost(post); $event.stopPropagation()"   matTooltip="Ajouter une suggestion">
             <mat-icon class="icon-add">add</mat-icon>
           </button>
-          <button mat-icon-button (click)="editPost(post); $event.stopPropagation()"  matTooltip="Contacter">
+          <button mat-icon-button (click)="initiateChat(post); $event.stopPropagation()"  matTooltip="Contacter">
             <mat-icon class="icon-chat">chat</mat-icon>
           </button>
           <button mat-icon-button (click)="showMap(post); $event.stopPropagation()"   matTooltip="Afficher sur la carte">

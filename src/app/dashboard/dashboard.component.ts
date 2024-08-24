@@ -9,17 +9,12 @@ import { ObjectService } from '../shared/services/object.service';
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent {
-  stat:
-    | {
-        nbPost: number;
-        nbExchangeSuccess: number;
-      }
-    | undefined;
+exhange : number = 0;
   constructor(private ObjectService: ObjectService) {}
   ngOnInit(): void {
     this.ObjectService.getStat().subscribe((data: any) => {
       console.log(data);
-      this.stat = data;
+      this.exhange = data.dailyExchange;
     });
   }
 }

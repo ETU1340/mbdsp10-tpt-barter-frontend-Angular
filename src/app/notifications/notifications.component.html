@@ -1,0 +1,13 @@
+<div class="notifications-container">
+  <div *ngFor="let notification of notifications" class="notification-item" [ngClass]="{'unread': !notification.isRead, 'read': notification.isRead}">
+    <div class="notification-content">
+      <h4 class="notification-title">{{ notification.subject }}</h4>
+      <p class="notification-message">{{ notification.message }}</p>
+    </div>
+    <div class="notification-actions">
+      <button class="mark-read-button" (click)="markAsRead(notification)" *ngIf="!notification.isRead">
+        Marqué comme lu
+      </button>
+    </div>
+  </div>
+</div>

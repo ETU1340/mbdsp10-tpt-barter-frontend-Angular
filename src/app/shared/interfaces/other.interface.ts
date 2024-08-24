@@ -75,3 +75,13 @@ export interface IChat {
   receiver: IUser;
   messages: IMessage[];
 }
+
+export interface Notification {
+  _id: number;
+  userId: number;
+  subject: string;
+  message: string;
+  isRead: boolean;
+  createdAt: Date;
+}
+

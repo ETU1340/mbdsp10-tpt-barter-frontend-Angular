@@ -50,7 +50,15 @@
       >
         <mat-icon>menu</mat-icon>
       </button>
-      <button (click)="login()" class="logout-button">Logout</button>
+
+            <!-- Notification Icon -->
+        <button
+        (click)="navigateToNotifications()"
+        class="hover:text-blue-500 transition-all duration-150 mx-3"
+      >
+        <mat-icon>notifications</mat-icon>
+      </button>
+      <button (click)="login()" class="logout-button">Deconnexion</button>
     </div>
     <router-outlet class="h-full w-full"></router-outlet>
   </div>

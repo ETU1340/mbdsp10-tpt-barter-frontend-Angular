@@ -18,9 +18,11 @@ export class ChatComponent implements OnInit {
   newMessage = '';
   userObject = JSON.parse(localStorage.getItem('user')!);
   userId: string;
+  name: string;
 
   constructor(private messagingService: ChatService, private route: ActivatedRoute) {
   this.userId = this.userObject.id ;
+  this.name = this.userObject.name;
   }
 
   ngOnInit() {
@@ -59,8 +61,12 @@ export class ChatComponent implements OnInit {
         timestamp: new Date(),
       };
 
+      let idReceiver  = this.selectedChat.receiver.id;
+      if(idReceiver == Number(this.userId) ) {
+        idReceiver = this.selectedChat.sender.id;
+      }
       this.messagingService
-        .sendMessage(this.selectedChat._id!, message)
+        .sendMessage(this.selectedChat._id!, message,idReceiver,this.name  )
         .subscribe((updatedChat) => {
           this.selectedChat = updatedChat.chat;
           this.newMessage = '';

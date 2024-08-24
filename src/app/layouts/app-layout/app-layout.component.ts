@@ -52,6 +52,7 @@ export class AppLayoutComponent {
   mail: string;
   constructor(
     private authService: AuthService,
+    private router: Router
   ) { 
     this.userName = this.userObject.name;
     this.mail = this.userObject.email;
@@ -63,5 +64,9 @@ export class AppLayoutComponent {
     this.authService.logout();
 
     // on navigue vers la page d'accueil
+  }
+
+  navigateToNotifications(): void {
+    this.router.navigate(['/app/notifications']);
   }
 }

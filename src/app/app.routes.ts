@@ -11,6 +11,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { PostComponent } from './post/posts.component';
 import { AddPostComponent } from './post/add-post/add-post.component';
 import {ChatComponent} from './chat/chat.component'
+import {NotificationsComponent} from './notifications/notifications.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -62,7 +63,8 @@ export const routes: Routes = [
       {
         path:'dash',
         component: DashboardComponent
-      }
+      },
+      { path: 'notifications', component: NotificationsComponent },
    
     ],
   },
