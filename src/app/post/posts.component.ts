@@ -132,7 +132,7 @@ export class PostComponent implements OnInit {
 
 
   showMap(post: any): void {
-    const postCoordinates: [number, number] = [-74.0060, 40.7128]; // Coordonnées du post (longitude, latitude)
+    const postCoordinates: [number, number] = [post.longitude,post.latitude]; // Coordonnées du post (longitude, latitude)
 
     this.dialog.open(MapModalComponent, {
       width: '800px',

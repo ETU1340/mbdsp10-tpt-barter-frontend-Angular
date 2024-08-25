@@ -1,5 +1,5 @@
-export const baseurl = 'http://localhost:7000/api/';
-//export const baseurl = 'https://angular-m2-backend.onrender.com/api/';
+//export const baseurl = 'http://localhost:7000/api/';
+export const baseurl = 'https://tpt-barter-backend.onrender.com/api/';
 export const urls = {
   posts:{
     post: baseurl + 'posts',

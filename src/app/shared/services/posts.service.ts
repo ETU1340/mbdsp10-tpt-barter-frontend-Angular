@@ -11,7 +11,6 @@ export class PostService {
   constructor(private http: HttpClient) {}
 
   getPosts(page: number, limit: number): Observable<IPost[]> {
-    console.log("atoooooooooooooooooooooooooooo");
   const params = new HttpParams()
   .set('page', page.toString())
   .set('limit', limit.toString());

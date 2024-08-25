@@ -78,10 +78,7 @@ export class SuggestionsComponent implements OnInit {
           // Étape 2: Échanger les objets du post
           const exchangePostObj = await this.exchangePostObjects(this.post.objects, suggestion.suggestedById);
           console.log(exchangePostObj);
-          if (!exchangePostObj) {
-            throw new Error("Erreur lors de l'échange des objets du post");
-          }
-  
+
           // Étape 3: Supprimer le post
           await this.postService.deletePost(suggestion.postId).toPromise();
           

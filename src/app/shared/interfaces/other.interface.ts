@@ -52,6 +52,8 @@ export interface IPost {
   authorId: number;
   objects: IObjectPost[];
   suggestions: ISuggestion[];
+  latitude?: number;
+  longitude?: number;
   deletedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
